@@ -19,5 +19,6 @@ mongoose.connect(process.env.MONGO_URI, {
 
 // Routes montées sur '/articles'
 app.use('/articles', require('./routes/articleRoutes'));
+app.use('/marque', require('./routes/ManagerRoutes/marqueVoitureRoutes'));
 
 app.listen(PORT, () => console.log(`Serveur démarré sur le port ${PORT}`))

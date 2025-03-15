@@ -1,13 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const MarqueVoiture = require('../../models/Manager/MarqueVoiture');
+const SortiePiece = require('../../models/Manager/SortiePiece');
 
 router.post('/', async (req, res) => {
     try {
-        console.log(req.body);
-        const marque = new MarqueVoiture(req.body);
-        await marque.save();
-        res.status(201).json(marque);
+        const sortie = new SortiePiece(req.body);
+        await sortie.save();
+        res.status(201).json(sortie);
     } catch (error) {
         res.status(400).json({ message: error.message });
     }
@@ -15,8 +14,8 @@ router.post('/', async (req, res) => {
 
 router.get('/', async (req, res) => {
     try {
-        const marque = await MarqueVoiture.find();
-        res.json(marque);
+        const sortie = await SortiePiece.find();
+        res.json(sortie);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -24,9 +23,9 @@ router.get('/', async (req, res) => {
 
 router.put('/:id', async (req, res) => {
     try {
-        const marque = await MarqueVoiture.findByIdAndUpdate(req.params.id,
+        const sortie = await SortiePiece.findByIdAndUpdate(req.params.id,
             req.body, { new: true });
-        res.json(marque);
+        res.json(sortie);
     } catch (error) {
         res.status(400).json({ message: error.message });
     }

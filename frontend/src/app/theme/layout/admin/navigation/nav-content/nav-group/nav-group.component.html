@@ -1,0 +1,52 @@
+<ul class="nav flex-column">
+  <li class="nav-item coded-menu-caption">
+    <button
+    (click)="toggleMenu()"
+    (keydown.enter)="toggleMenu()"
+    tabindex="0"
+    class="menu-button"
+  >
+    Manager
+  </button>
+    <ul *ngIf="isMenuOpen" class="submenu">
+      <li>
+        <a  href="marque" tabindex="0">MarqueVoiture</a>
+      </li>
+      <li>
+        <a (click)="handleClick('liste')" (keydown.enter)="handleClick('liste')" tabindex="0">Liste</a>
+      </li>
+    </ul>
+  </li>
+
+  <li class="nav-item coded-menu-caption">
+    <label for="test">Test</label>
+  </li>
+</ul>
+<!-- CSS -->
+<style>
+  .menu-button {
+    background: transparent; /* Fond transparent */
+    border: none; /* Supprime la bordure */
+    cursor: pointer; /* Curseur en mode clic */
+    font-size: inherit; /* Garde la taille du texte */
+
+  }
+
+
+  .submenu {
+    list-style: none;
+    padding-left: 16px; /* Indentation du sous-menu */
+    display: block;
+  }
+
+  .submenu li a {
+    text-decoration: none;
+    color: black;
+    display: block;
+    padding: 5px 0;
+  }
+
+  .submenu li a:hover {
+    color: blue; /* Couleur au survol */
+  }
+</style>

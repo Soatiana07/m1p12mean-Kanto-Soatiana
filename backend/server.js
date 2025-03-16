@@ -27,5 +27,15 @@ app.use('/marqueVoiture', require('./routes/ManagerRoutes/marqueVoitureRoutes'))
 app.use('/modePaiement', require('./routes/ManagerRoutes/modePaiementRoutes'));
 app.use('/pieces', require('./routes/ManagerRoutes/pieceRoutes'));
 app.use('/sortiePiece', require('./routes/ManagerRoutes/sortiePieceRoutes'));
+app.use('/anneeVoiture', require('./routes/ManagerRoutes/anneeVoitureRoutes'));
+app.use('/categorieService', require('./routes/ManagerRoutes/categorieServiceRoutes'));
+app.use('/generationVoiture', require('./routes/ManagerRoutes/generationVoitureRoutes'));
+app.use('/service', require('./routes/ManagerRoutes/serviceRoutes'));
+app.use('/historiquePrixService', require('./routes/ManagerRoutes/historiquePrixServiceRoutes'));
+app.use('/role', require('./routes/EmployeRoutes/roleRoutes'));
+app.use('/specialite', require('./routes/EmployeRoutes/specialiteRoutes'));
+app.use('/employe', require('./routes/EmployeRoutes/employeRoutes'));
+app.use('/specialiteEmploye', require('./routes/EmployeRoutes/specialiteEmployeRoutes'));
+app.use('/specialiteService', require('./routes/EmployeRoutes/specialiteServiceRoutes'));
 
 app.listen(PORT, () => console.log(`Serveur démarré sur le port ${PORT}`))

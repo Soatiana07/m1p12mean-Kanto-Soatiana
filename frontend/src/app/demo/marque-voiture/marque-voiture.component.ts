@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 
+declare let bootstrap: any;
 
 @Component({
   selector: 'app-marque-voiture',
@@ -13,45 +14,68 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './marque-voiture.component.scss',
   providers: [MarqueVoitureService]
 })
-export class MarqueVoitureComponent implements OnInit { // ✅ Implémentation de OnInit
+export class MarqueVoitureComponent implements OnInit {
 
-  marques: any[] = []; // ✅ Initialisation correcte
-  newMarque = { marque: '', note: '',};
+  marques: any[] = [];
+  newMarque = { marque: '', note: ''};
+  selectedMarque: any = {};
   constructor(private marqueService: MarqueVoitureService) { }
 
-  ngOnInit(): void { // ✅ Plus de warning ESLint
-    console.log('hey');
+  ngOnInit(): void {
     this.loadMarque();
   }
 
   loadMarque(): void {
-    console.log('ito eeee');
     this.marqueService.getMarque().subscribe(data => this.marques = data);
   }
 
   addMarque(): void {
-    const formData = new FormData();
-
-    if (this.newMarque.marque && this.newMarque.note) {
-        formData.append('marque', this.newMarque.marque);
-        formData.append('note', this.newMarque.note);
-
-        console.log('Contenu de FormData :');
-
-
-    } else {
-        console.log("Une des valeurs est undefined ou null !");
-    }
-
-
-
-    console.log(formData);
     this.marqueService.addMarque(this.newMarque.marque,this.newMarque.note).subscribe(() => {
-      this.loadMarque(); // Recharge la liste après ajout
-      this.newMarque = { marque: '', note: '' }; // Réinitialise le formulaire
+      this.loadMarque();
+      this.newMarque = { marque: '', note: '' };
 
     });
+  }
 
+  openUpdateModal(marque: any) {
+    this.selectedMarque = { ...marque };
+    const modalElement = document.getElementById('editModal');
+    if (modalElement) {
+      const modalInstance = new bootstrap.Modal(modalElement);
+      modalInstance.show();
+    }
+  }
+
+  updateMarque(id: string, marque: string, note: string): void {
+    this.marqueService.updateMarque(id, marque, note).subscribe(() => {
+      this.loadMarque();
+      this.selectedMarque = { };
+    });
+  }
+
+  confirmUpdateMarque(){
+    this.updateMarque(this.selectedMarque._id, this.selectedMarque.marque, this.selectedMarque.note);
+  }
+
+  openDeleteModal(marque: any) {
+    this.selectedMarque = { ...marque}
+    const modalElement = document.getElementById('deleteModal');
+    if (modalElement) {
+      const modalInstance = new bootstrap.Modal(modalElement);
+      modalInstance.show();
+    }
+  }
+
+  deleteMarque(id: string): void{
+    this.marqueService.deleteMarque(id).subscribe(()=>{
+      this.loadMarque();
+      this.selectedMarque ={ };
+    });
 
   }
+
+  confirmDeleteMarque(){
+    this.deleteMarque(this.selectedMarque._id);
+  }
+
 }

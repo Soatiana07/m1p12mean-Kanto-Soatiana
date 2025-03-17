@@ -31,4 +31,15 @@ router.put('/:id', async (req, res) => {
         res.status(400).json({ message: error.message });
     }
 });
+
+router.delete('/:id', async (req, res) => {
+    try {
+        console.log('hey');
+        await MarqueVoiture.findByIdAndDelete(req.params.id);
+        res.json({message: "Marque supprimé"});
+    } catch (error) {
+        console.log('bye');
+        res.status(500).json({messgae: error.message});
+    }
+});
 module.exports = router;

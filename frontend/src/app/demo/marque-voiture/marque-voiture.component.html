@@ -27,7 +27,8 @@
             <td *ngIf="marque.note === 5" style="background-color: aquamarine;">{{ marque.marque }}</td>
             <td *ngIf="marque.note !== 5" style="background-color: beige;">{{ marque.marque }}</td>
             <td>{{ marque.note }}</td>
-            <td><button class="btn btn-warning">Modifier</button></td>
+            <td><button class="btn btn-warning mr-3"  (click)="openUpdateModal(marque)">Modifier</button>
+              <button class="btn btn-danger mr-3"  (click)="openDeleteModal(marque)">Supprimer</button></td>
           </tr>
         </tbody>
 
@@ -38,5 +39,60 @@
 
 
     </app-card>
+  </div>
+</div>
+
+
+<!-- Modal de modification -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Modifier la Marque</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form #editForm="ngForm">
+          <div class="mb-3">
+            <label for="marque" class="form-label">Marque</label>
+            <input type="text" [(ngModel)]="selectedMarque.marque" name="marque" class="form-control" required />
+
+          </div>
+          <div class="mb-3">
+            <label for="marque" class="form-label">Note</label>
+            <input type="number" [(ngModel)]="selectedMarque.note" name="note" class="form-control" required />
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+        <button type="button" class="btn btn-primary" (click)="confirmUpdateMarque()" data-bs-dismiss="modal">Enregistrer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- Modal de suppression -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Supprimer la Marque</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form #editForm="ngForm">
+          <div class="mb-3">
+            <label for="marque" class="form-label">Voulez-vous vraiment supprimer la marque {{ selectedMarque.marque}}?</label>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+        <button type="button" class="btn btn-primary" (click)="confirmDeleteMarque()" data-bs-dismiss="modal">Supprimer</button>
+      </div>
+    </div>
   </div>
 </div>

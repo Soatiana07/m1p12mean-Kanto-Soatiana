@@ -22,4 +22,15 @@ export class MarqueVoitureService {
     const body ={ marque,note};
     return this.http.post(this.apiUrl, body);
   }
+
+  updateMarque(id: string,marque: string, note: string): Observable<any> {
+    const body ={marque, note};
+    return this.http.put(`${this.apiUrl}/${id}`, body);
+  }
+
+  deleteMarque(id: string): Observable<any> {
+    console.log(`${this.apiUrl}/${id}`);
+    return this.http.delete(`${this.apiUrl}/${id}`);
+  }
+
 }

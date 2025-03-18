@@ -33,6 +33,14 @@ const routes: Routes = [
         path: 'marque',
         loadComponent: () => import('./demo/marque-voiture/marque-voiture.component').then(m => m.MarqueVoitureComponent)
       },
+      {
+        path: 'fournisseur',
+        loadComponent: () => import('./demo/fournisseur/fournisseur.component').then(m => m.FournisseurComponent)
+      },
+      {
+        path: 'piece',
+        loadComponent: () => import('./demo/piece/piece.component').then(m => m.PieceComponent)
+      },
 
       {
         path: 'annee',

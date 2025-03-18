@@ -42,4 +42,45 @@ router.delete('/:id', async (req, res) => {
         res.status(500).json({messgae: error.message});
     }
 });
+
+
+// router.put('/:id/etat', async (req, res) => {
+//     try {
+//         const fournisseur = await Fournisseur.findByIdAndUpdate(
+//             req.params.id,
+//             { $set: { etat: 1 } }, // Met à jour uniquement l'état à 1
+//             { new: true } // Retourne le document mis à jour
+//         );
+
+//         if (!fournisseur) {
+//             return res.status(404).json({ message: "Fournisseur non trouvé" });
+//         }
+
+//         res.json(fournisseur);
+//     } catch (error) {
+//         res.status(400).json({ message: error.message });
+//     }
+// });
+
+// router.put('/:id', async (req, res) => {
+//     try {
+//         const { nom, etat } = req.body; // Récupération des champs à modifier
+
+//         const fournisseur = await Fournisseur.findByIdAndUpdate(
+//             req.params.id,
+//             { $set: { nom, etat } }, // Mise à jour de nom et etat
+//             { new: true, runValidators: true } // Retourne le document mis à jour et applique les validations
+//         );
+
+//         if (!fournisseur) {
+//             return res.status(404).json({ message: "Fournisseur non trouvé" });
+//         }
+
+//         res.json(fournisseur);
+//     } catch (error) {
+//         res.status(400).json({ message: error.message });
+//     }
+// });
+
+
 module.exports = router;

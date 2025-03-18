@@ -32,6 +32,7 @@ app.use('/categorieService', require('./routes/ManagerRoutes/categorieServiceRou
 app.use('/generationVoiture', require('./routes/ManagerRoutes/generationVoitureRoutes'));
 app.use('/service', require('./routes/ManagerRoutes/serviceRoutes'));
 app.use('/historiquePrixService', require('./routes/ManagerRoutes/historiquePrixServiceRoutes'));
+app.use('/pays', require('./routes/ManagerRoutes/paysRoutes'));
 app.use('/role', require('./routes/EmployeRoutes/roleRoutes'));
 app.use('/specialite', require('./routes/EmployeRoutes/specialiteRoutes'));
 app.use('/employe', require('./routes/EmployeRoutes/employeRoutes'));

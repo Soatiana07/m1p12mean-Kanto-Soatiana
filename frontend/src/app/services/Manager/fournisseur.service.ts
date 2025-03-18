@@ -11,9 +11,6 @@ export class FournisseurService {
  private apiUrl = `${environment.apiUrl}/pays`;
   constructor(private http: HttpClient) { }
 
-  // searchPays(query: string): Observable<any[]> {
-  //   return this.http.get<any[]>(`${this.apiUrl}?q=${query}`);
-  // }
 
   searchPays(query: string): Observable<any[]> {
     return this.http

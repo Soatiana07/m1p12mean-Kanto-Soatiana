@@ -1,4 +1,3 @@
-
 <div class="row">
   <div class="col-sm-12">
     <app-card cardTitle="Fournisseur">
@@ -7,7 +6,7 @@
         <button class="btn btn-primary" (click)="openAddModal()">Ajouter</button>
       </div>
 
-    <table class="table table-striped table-hover mt-3">
+      <table class="table table-striped table-hover mt-3">
         <thead>
           <tr>
             <th>Nom</th>
@@ -20,15 +19,9 @@
           </tr>
         </thead>
         <tbody>
-
+          <!-- Les données seront injectées ici -->
         </tbody>
-
-
       </table>
-
-
-
-
     </app-card>
   </div>
 </div>
@@ -44,35 +37,45 @@
       <div class="modal-body">
         <form autocomplete="off">
           <div class="mb-3">
-            <label for="marque" class="form-label">Nom</label>
-            <input type="text" name="nom" class="form-control" required />
+            <label for="nom" class="form-label">Nom</label>
+            <input type="text" id="nom" name="nom" class="form-control" required />
+          </div>
 
-          </div>
           <div class="mb-3">
-            <label for="marque" class="form-label">Site web</label>
-            <input type="text"  name="siteweb" class="form-control"  />
+            <label for="siteweb" class="form-label">Site web</label>
+            <input type="text" id="siteweb" name="siteweb" class="form-control" />
           </div>
+
+          <!-- Champ de recherche avec auto-complétion -->
           <div class="mb-3">
-            <label for="marque" class="form-label">Pays</label>
-            <input type="text"  name="pays" class="form-control" required />
+            <label for="pays" class="form-label">Pays</label>
+            <input type="text" id="pays" name="pays" class="form-control" [(ngModel)]="query" (input)="searchPays()" />
+            <ul *ngIf="paysSuggestions.length > 0" class="list-group mt-2">
+              <li *ngFor="let pays of paysSuggestions" class="list-group-item" (click)="selectSuggestion(pays)">
+                {{ pays.nom_fr_fr }}
+              </li>
+            </ul>
           </div>
+
           <div class="mb-3">
-            <label for="marque" class="form-label">Adresse</label>
-            <input type="text"  name="adresse" class="form-control" required />
+            <label for="adresse" class="form-label">Adresse</label>
+            <input type="text" id="adresse" name="adresse" class="form-control" required />
           </div>
+
           <div class="mb-3">
-            <label for="marque" class="form-label">Telephone</label>
-            <input type="text"  name="telephone" class="form-control" required />
+            <label for="telephone" class="form-label">Téléphone</label>
+            <input type="text" id="telephone" name="telephone" class="form-control" required />
           </div>
+
           <div class="mb-3">
-            <label for="marque" class="form-label">Mail</label>
-            <input type="text"  name="mail" class="form-control" required />
+            <label for="mail" class="form-label">Mail</label>
+            <input type="text" id="mail" name="mail" class="form-control" required />
           </div>
         </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
-        <button type="button" class="btn btn-primary"  data-bs-dismiss="modal">Enregistrer</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Enregistrer</button>
       </div>
     </div>
   </div>

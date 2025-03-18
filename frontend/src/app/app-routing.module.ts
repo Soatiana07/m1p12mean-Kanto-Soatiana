@@ -32,6 +32,11 @@ const routes: Routes = [
       {
         path: 'marque',
         loadComponent: () => import('./demo/marque-voiture/marque-voiture.component').then(m => m.MarqueVoitureComponent)
+      },
+
+      {
+        path: 'annee',
+        loadComponent: () => import('./demo/annee-voiture/annee-voiture.component').then(m => m.AnneeVoitureComponent)
       }
 
     ]

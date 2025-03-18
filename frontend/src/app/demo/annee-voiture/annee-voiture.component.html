@@ -1,0 +1,41 @@
+<div class="row">
+  <div class="col-sm-12">
+    <app-card cardTitle="Année voiture">
+      <form (submit)="isEditing ? updateAnnee(anneeEnCours._id, newAnnee) : addAnnee()">
+        <div class="row">
+          <div class="col-4">
+            <input type="text" class="form-control" [(ngModel)]="newAnnee.annee" name="annee" placeholder="Année" required>
+          </div>
+          <div class="col-4">
+            <input type="text" class="form-control" [(ngModel)]="newAnnee.note" name="note" placeholder="Note" required>
+          </div>
+          <div class="col-4">
+            <button class="btn btn-primary" *ngIf="!isEditing">Ajouter</button>
+            <button class="btn btn-warning" *ngIf="isEditing">Modifier</button>
+            <button class="btn btn-secondary" *ngIf="isEditing" (click)="cancelEdit()">Annuler</button>
+          </div>
+        </div>
+      </form>
+
+      <table class="table table-striped table-hover mt-3">
+        <thead>
+          <tr>
+            <th>Année</th>
+            <th>Note</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let annee of annees">
+            <td [style.background-color]="annee.note === '5' ? 'aquamarine' : 'beige'">{{ annee.annee }}</td>
+            <td>{{ annee.note }}</td>
+            <td>
+              <button class="btn btn-warning btn-sm" (click)="editAnnee(annee)">Modifier</button>
+              <button class="btn btn-danger btn-sm" (click)="deleteAnnee(annee._id)">Supprimer</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </app-card>
+  </div>
+</div>

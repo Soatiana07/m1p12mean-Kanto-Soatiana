@@ -10,7 +10,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  imports: [RouterOutlet, SpinnerComponent,HttpClientModule,MatAutocompleteModule ,MatInputModule,MatFormFieldModule,HttpClientModule]
+  imports: [RouterOutlet, SpinnerComponent,MatAutocompleteModule ,MatInputModule,MatFormFieldModule,HttpClientModule]
 })
 export class AppComponent {
   title = 'Garage';

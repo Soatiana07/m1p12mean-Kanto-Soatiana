@@ -30,4 +30,17 @@ router.put('/:id', async (req, res) => {
         res.status(400).json({ message: error.message });
     }
 });
+
+router.get('/cherchePiece', async (req, res) => {
+    try {
+        const query = req.query.q;
+        if (!query) {
+            return res.json([]); 
+        }
+        const piece = await Piece.find({ nomPiece: { $regex: query, $options: 'i' } });
+        res.json(piece);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
 module.exports = router;

@@ -1,17 +1,16 @@
 <div class="row">
   <div class="col-sm-12">
     <app-card cardTitle="Piece">
-      <form autocomplete="off">
+      <form (submit)="addPiece()" autocomplete="off">
       <div class="row">
         <div class="col-3">
-          <input type="text" class="form-control"   name="nompiece" placeholder="Nom piece">
+          <input type="text" class="form-control"  [(ngModel)]="piece.nomPiece"  name="nomPiece" placeholder="Nom piece">
         </div>
         <div class="col-3">
-          <input type="text" class="form-control"  name="reference" placeholder="Reference">
+          <input type="text" class="form-control"  [(ngModel)]="piece.referencePiece"  name="referencePiece" placeholder="Reference">
         </div>
         <div class="col-3">
-          <select class="form-control" name="type" required>
-            <option>Type piece</option>
+          <select class="form-control" name="typePiece"  [(ngModel)]="piece.typePiece" required>
             <option value="Fer">Fer</option>
             <option value="Hydraulique">Hydraulique</option>
           </select>
@@ -31,15 +30,14 @@
           </tr>
         </thead>
         <tbody>
-
+          <tr *ngFor="let piece of pieces; let i = index">
+            <td>{{ piece.nomPiece }}</td>
+            <td>{{ piece.referencePiece }}</td>
+            <td>{{ piece.typePiece }}</td>
+            <td><button class="btn btn-warning mr-3" (click)="openUpdateModal(piece)"  >Modifier</button>
+          </tr>
         </tbody>
-
-
       </table>
-
-
-
-
     </app-card>
   </div>
 </div>
@@ -50,27 +48,31 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Modifier la Marque</h5>
+        <h5 class="modal-title">Modifier la piece</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
+      <form autocomplete="off">
       <div class="modal-body">
-        <form >
           <div class="mb-3">
-            <label for="marque" class="form-label">Marque</label>
-            <input type="text"  name="marque" class="form-control" required />
-
+            <label for="marque" class="form-label">Nom piece</label>
+            <input type="text"  name="nomPiece" [(ngModel)]="selectedPiece.nomPiece" class="form-control" required />
           </div>
           <div class="mb-3">
-            <label for="marque" class="form-label">Note</label>
-            <input type="number"  name="note" class="form-control" required />
+            <label for="marque" class="form-label">Reference piece</label>
+            <input type="text"  name="referencePiece" [(ngModel)]="selectedPiece.referencePiece"  class="form-control" required />
           </div>
-        </form>
+          <select class="form-control" name="typePiece" [(ngModel)]="selectedPiece.typePiece"  required>
+            <option value="Fer">Fer</option>
+            <option value="Hydraulique">Hydraulique</option>
+          </select>
       </div>
+    </form>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
-        <button type="button" class="btn btn-primary"  data-bs-dismiss="modal">Enregistrer</button>
+        <button type="button" class="btn btn-primary" (click)="confirmUpdatePiece()"  data-bs-dismiss="modal">Enregistrer</button>
       </div>
     </div>
+
   </div>
 </div>
 

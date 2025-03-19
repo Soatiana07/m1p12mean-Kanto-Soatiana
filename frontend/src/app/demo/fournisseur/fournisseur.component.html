@@ -19,7 +19,15 @@
           </tr>
         </thead>
         <tbody>
-          <!-- Les données seront injectées ici -->
+          <tr *ngFor="let fournisseur of listefournisseur; let i = index">
+            <td>{{ fournisseur.nom }}</td>
+            <td>{{ fournisseur.siteweb }}</td>
+            <td>{{ fournisseur.adresse }}</td>
+            <td>{{ fournisseur.pays.nom_fr_fr }}</td>
+            <td>{{ fournisseur.telephone }}</td>
+            <td>{{ fournisseur.mail }}</td>
+            <td><button class="btn btn-warning mr-3"  (click)="openUpdateModal(fournisseur)">Modifier</button>
+          </tr>
         </tbody>
       </table>
     </app-card>
@@ -34,19 +42,18 @@
         <h5 class="modal-title">Ajout fournisseur</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
+      <form  autocomplete="off">
       <div class="modal-body">
-        <form autocomplete="off">
           <div class="mb-3">
             <label for="nom" class="form-label">Nom</label>
-            <input type="text" id="nom" name="nom" class="form-control" required />
+            <input type="text" id="nom" name="nom"  [(ngModel)]="fournisseur.nom" class="form-control" required />
           </div>
 
           <div class="mb-3">
             <label for="siteweb" class="form-label">Site web</label>
-            <input type="text" id="siteweb" name="siteweb" class="form-control" />
+            <input type="text" id="siteweb" name="siteweb" [(ngModel)]="fournisseur.siteweb" class="form-control" />
           </div>
 
-          <!-- Champ de recherche avec auto-complétion -->
           <div class="mb-3">
             <label for="pays" class="form-label">Pays</label>
             <input type="text" id="pays" name="pays" class="form-control" [(ngModel)]="query" (input)="searchPays()" />
@@ -60,24 +67,24 @@
 
           <div class="mb-3">
             <label for="adresse" class="form-label">Adresse</label>
-            <input type="text" id="adresse" name="adresse" class="form-control" required />
+            <input type="text" id="adresse" name="adresse" [(ngModel)]="fournisseur.adresse" class="form-control" required />
           </div>
 
           <div class="mb-3">
             <label for="telephone" class="form-label">Téléphone</label>
-            <input type="text" id="telephone" name="telephone" class="form-control" required />
+            <input type="text" id="telephone" name="telephone" [(ngModel)]="fournisseur.telephone" class="form-control" required />
           </div>
 
           <div class="mb-3">
             <label for="mail" class="form-label">Mail</label>
-            <input type="text" id="mail" name="mail" class="form-control" required />
+            <input type="text" id="mail" name="mail" [(ngModel)]="fournisseur.mail" class="form-control" required />
           </div>
-        </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
-        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Enregistrer</button>
+        <button type="button" class="btn btn-primary" (click)="addFournisseur()" data-bs-dismiss="modal">Enregistrer</button>
       </div>
+    </form>
     </div>
   </div>
 </div>
@@ -88,25 +95,38 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Modifier la Marque</h5>
+        <h5 class="modal-title">Modification fournisseur</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body">
-        <form>
-          <div class="mb-3">
-            <label for="marque" class="form-label">Marque</label>
-            <input type="text" name="marque" class="form-control" required />
+        <div class="mb-3">
+          <label for="nom" class="form-label">Nom</label>
+          <input type="text" id="nom" name="nom"  [(ngModel)]="selectedFournisseur.nom" class="form-control" required />
+        </div>
 
-          </div>
-          <div class="mb-3">
-            <label for="marque" class="form-label">Note</label>
-            <input type="number"  name="note" class="form-control" required />
-          </div>
-        </form>
-      </div>
+        <div class="mb-3">
+          <label for="siteweb" class="form-label">Site web</label>
+          <input type="text" id="siteweb" name="siteweb" [(ngModel)]="selectedFournisseur.siteweb" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+          <label for="adresse" class="form-label">Adresse</label>
+          <input type="text" id="adresse" name="adresse" [(ngModel)]="selectedFournisseur.adresse" class="form-control" required />
+        </div>
+
+        <div class="mb-3">
+          <label for="telephone" class="form-label">Téléphone</label>
+          <input type="text" id="telephone" name="telephone" [(ngModel)]="selectedFournisseur.telephone" class="form-control" required />
+        </div>
+
+        <div class="mb-3">
+          <label for="mail" class="form-label">Mail</label>
+          <input type="text" id="mail" name="mail" [(ngModel)]="selectedFournisseur.mail" class="form-control" required />
+        </div>
+    </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
-        <button type="button" class="btn btn-primary"  data-bs-dismiss="modal">Enregistrer</button>
+        <button type="button" class="btn btn-primary"  data-bs-dismiss="modal" (click)="confirmUpdateFournisseur()">Enregistrer</button>
       </div>
     </div>
   </div>
@@ -119,13 +139,13 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Supprimer la Marque</h5>
+        <h5 class="modal-title">Supprimer le fournisseur</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body">
         <form >
           <div class="mb-3">
-            <label for="marque" class="form-label">Voulez-vous vraiment supprimer la marque?</label>
+            <label for="marque" class="form-label">Voulez-vous vraiment supprimer le fournisseur {{ selectedFournisseur.nom}}?</label>
           </div>
         </form>
       </div>

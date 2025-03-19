@@ -45,6 +45,10 @@ const routes: Routes = [
       {
         path: 'annee',
         loadComponent: () => import('./demo/annee-voiture/annee-voiture.component').then(m => m.AnneeVoitureComponent)
+      },
+      {
+        path: 'entreePiece',
+        loadComponent: () => import('./demo/entree-piece/entree-piece.component').then(m => m.EntreePieceComponent)
       }
 
     ]

@@ -24,8 +24,10 @@ export class AnneeVoitureService {
   }
 
   // Update
-  updateAnnee(id: string, annee: any): Observable<any> {
-    return this.http.put(`${this.apiUrl}/${id}`, annee);
+  updateAnnee(id: string, annee: string, note: string): Observable<any> {
+    const body = {annee, note};
+    console.log(`${this.apiUrl}/${id}`);
+    return this.http.put(`${this.apiUrl}/${id}`, body);
   }
 
   // Delete

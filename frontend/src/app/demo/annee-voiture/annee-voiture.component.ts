@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { AnneeVoitureService } from 'src/app/services/Manager/annee-voiture.service';
 import { CardComponent } from 'src/app/theme/shared/components/card/card.component';
 
+declare let bootstrap: any;
 @Component({
   selector: 'app-annee-voiture',
   imports: [CardComponent, CommonModule, HttpClientModule, FormsModule],
@@ -17,6 +18,7 @@ export class AnneeVoitureComponent implements OnInit {
   newAnnee = { annee: '', note: '',};
   isEditing = false; // Indicateur de modification
   anneeEnCours: any = null; // Stocke l'année à modifier
+  selectedAnnee: any = {};
   constructor(private anneeService: AnneeVoitureService) { }
 
   ngOnInit(): void {
@@ -38,9 +40,7 @@ export class AnneeVoitureComponent implements OnInit {
         formData.append('annee', this.newAnnee.annee);
         formData.append('note', this.newAnnee.note);
 
-        console.log('Contenu de FormData :');
-
-
+        console.log('Contenu de FormData :',formData);
     } else {
         console.log("Une des valeurs est undefined ou null !");
     }
@@ -54,33 +54,48 @@ export class AnneeVoitureComponent implements OnInit {
 
   // Suppression d'une année
   deleteAnnee(id: string): void {
-    if (confirm("Voulez-vous vraiment supprimer cette année ?")) {
-      this.anneeService.deleteAnnee(id).subscribe(() => {
-        this.loadAnnee(); // Recharge la liste après suppression
-      });
+    this.anneeService.deleteAnnee(id).subscribe(() => {
+      this.loadAnnee(); // Recharge la liste après suppression
+    });
+  }
+
+  // Modal
+  openUpdateModal(annee: any) {
+    this.selectedAnnee = { ...annee};
+    const modalElement = document.getElementById('editModal');
+    if (modalElement) {
+      const modalInstance = new bootstrap.Modal(modalElement);
+      modalInstance.show();
     }
   }
 
-  // Préparer l'édition d'une année
-  editAnnee(annee: any): void {
-    this.newAnnee = { ...annee }; // Remplit le formulaire avec les données existantes
-    this.isEditing = true;
-  }
-
-  // Mise à jour d'une année
-  updateAnnee(id: string, annee: any): void {
-    if (id) {
-      this.anneeService.updateAnnee(id,annee).subscribe(() => {
+  // Update
+  updateAnnee(id: string, annee: string, note: string): void {
+    if(id){
+      this.anneeService.updateAnnee(id, annee, note).subscribe(() => {
         this.loadAnnee();
-        this.newAnnee = { annee: '', note: '' }; // Réinitialisation
-        this.isEditing = false;
+        this.selectedAnnee = { };
       });
+    }
+    else{
+      console.log("Tsy hita le id");
     }
   }
 
-  cancelEdit(): void {
-    this.newAnnee = { annee: '', note: '' };
-    this.anneeEnCours = null;
-    this.isEditing = false;
+  confirmUpdateAnnee(){
+    this.updateAnnee(this.selectedAnnee._id, this.selectedAnnee.annee, this.selectedAnnee.note);
+  }
+
+  openDeleteModal(annee: any) {
+    this.selectedAnnee = { ...annee}
+    const modalElement = document.getElementById('deleteModal');
+    if (modalElement) {
+      const modalInstance = new bootstrap.Modal(modalElement);
+      modalInstance.show();
+    }
+  }
+
+  confirmDeleteAnnee(){
+    this.deleteAnnee(this.selectedAnnee._id);
   }
 }

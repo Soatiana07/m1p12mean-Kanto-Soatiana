@@ -44,4 +44,14 @@ router.delete('/:id', async (req, res) => {
         res.status(500).json({messgae: error.message});
     }
 });
+
+// Get by id
+router.get('/:id', async (req, res) => {
+    try {
+        const categorie = await CategorieService.findById(req.params.id);
+        res.json(categorie);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
 module.exports = router;

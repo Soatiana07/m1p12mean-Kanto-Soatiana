@@ -46,6 +46,15 @@ const routes: Routes = [
         path: 'annee',
         loadComponent: () => import('./demo/annee-voiture/annee-voiture.component').then(m => m.AnneeVoitureComponent)
       },
+
+      {
+        path: 'generation',
+        loadComponent: () => import('./demo/generation-voiture/generation-voiture.component').then(m => m.GenerationVoitureComponent)
+      },
+      {
+        path: 'service',
+        loadComponent: () => import('./demo/service/service.component').then(m => m.ServiceComponent)
+      },
       {
         path: 'entreePiece',
         loadComponent: () => import('./demo/entree-piece/entree-piece.component').then(m => m.EntreePieceComponent)
@@ -61,6 +70,19 @@ const routes: Routes = [
       {
         path: 'sortiePiece',
         loadComponent: () => import('./demo/sortie-piece/sortie-piece.component').then(m => m.SortiePieceComponent)
+      },
+
+      {
+        path: 'categorieService',
+        loadComponent: () => import('./demo/categorie-service/categorie-service.component').then(m => m.CategorieServiceComponent)
+      },
+      {
+        path: 'role',
+        loadComponent: () => import('./demo/role/role.component').then(m => m.RoleComponent)
+      },
+      {
+        path: 'specialite',
+        loadComponent: () => import('./demo/specialite/specialite.component').then(m => m.SpecialiteComponent)
       }
 
     ]

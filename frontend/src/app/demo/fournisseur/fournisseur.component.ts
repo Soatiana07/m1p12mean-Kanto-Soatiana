@@ -23,14 +23,14 @@ declare let bootstrap: any;
   ],
   templateUrl: './fournisseur.component.html',
   styleUrls: ['./fournisseur.component.scss'],
-   providers: [FournisseurService]
+  providers: [FournisseurService]
 })
 export class FournisseurComponent implements OnInit {
   paysSuggestions: any[] = [];
   listefournisseur: any[] = [];
   query: string = '';
-  idPays: string ='';
-  fournisseur = { nom:'', siteweb: '', pays: '', adresse:'', telephone:'', mail:'', etat:''};
+  idPays: string = '';
+  fournisseur = { nom: '', siteweb: '', pays: '', adresse: '', telephone: '', mail: '', etat: '' };
   selectedFournisseur: any = {};
   constructor(private fournisseurService: FournisseurService) { }
 
@@ -75,13 +75,12 @@ export class FournisseurComponent implements OnInit {
   }
 
   addFournisseur(): void {
-    console.log('bonjour');
     this.fournisseur.pays = this.idPays;
-    this.fournisseur.etat="0";
+    this.fournisseur.etat = "0";
     console.log(this.fournisseur);
-    this.fournisseurService.addFournisseur(this.fournisseur.nom, this.fournisseur.siteweb,this.fournisseur.adresse,this.fournisseur.pays,this.fournisseur.telephone,this.fournisseur.mail,this.fournisseur.etat).subscribe(() => {
+    this.fournisseurService.addFournisseur(this.fournisseur.nom, this.fournisseur.siteweb, this.fournisseur.adresse, this.fournisseur.pays, this.fournisseur.telephone, this.fournisseur.mail, this.fournisseur.etat).subscribe(() => {
       this.loadFournisseur();
-      this.fournisseur = {nom:'', siteweb: '', pays: '', adresse:'', telephone:'', mail:'', etat:''};
+      this.fournisseur = { nom: '', siteweb: '', pays: '', adresse: '', telephone: '', mail: '', etat: '' };
 
     });
   }
@@ -95,14 +94,14 @@ export class FournisseurComponent implements OnInit {
     }
   }
 
-  updateFournisseur(id: string,nom: string, siteweb: string, adresse: string, telephone: string, mail: string): void {
-    this.fournisseurService.updateFournisseur(id, nom, siteweb,adresse,telephone,mail).subscribe(() => {
+  updateFournisseur(id: string, nom: string, siteweb: string, adresse: string, telephone: string, mail: string): void {
+    this.fournisseurService.updateFournisseur(id, nom, siteweb, adresse, telephone, mail).subscribe(() => {
       this.loadFournisseur();
-      this.selectedFournisseur = { };
+      this.selectedFournisseur = {};
     });
   }
 
-  confirmUpdateFournisseur(){
+  confirmUpdateFournisseur() {
     this.updateFournisseur(this.selectedFournisseur._id,
       this.selectedFournisseur.nom,
       this.selectedFournisseur.siteweb,
@@ -113,7 +112,7 @@ export class FournisseurComponent implements OnInit {
   }
 
   openDeleteModal(fournisseur: any) {
-    this.selectedFournisseur = { ...fournisseur}
+    this.selectedFournisseur = { ...fournisseur }
     const modalElement = document.getElementById('deleteModal');
     if (modalElement) {
       const modalInstance = new bootstrap.Modal(modalElement);

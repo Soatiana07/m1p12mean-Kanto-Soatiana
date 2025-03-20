@@ -49,6 +49,18 @@ const routes: Routes = [
       {
         path: 'entreePiece',
         loadComponent: () => import('./demo/entree-piece/entree-piece.component').then(m => m.EntreePieceComponent)
+      },
+      {
+        path: 'stockPiece',
+        loadComponent: () => import('./demo/stock-piece/stock-piece.component').then(m => m.StockPieceComponent)
+      },
+      {
+        path: 'detailEntreePiece/:idEntreePiece',
+        loadComponent: () => import('./demo/detail-entree-piece/detail-entree-piece.component').then(m => m.DetailEntreePieceComponent)
+      },
+      {
+        path: 'sortiePiece',
+        loadComponent: () => import('./demo/sortie-piece/sortie-piece.component').then(m => m.SortiePieceComponent)
       }
 
     ]

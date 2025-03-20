@@ -17,6 +17,7 @@ router.get('/', async (req, res) => {
     try {
         const fournisseur = await Fournisseur.find()
         .populate("pays")  
+        .sort({ _id: -1 })
         .exec();
         res.json(fournisseur);
     } catch (error) {

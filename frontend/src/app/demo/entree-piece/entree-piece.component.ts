@@ -8,6 +8,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 declare let bootstrap: any;
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-entree-piece',
@@ -18,7 +19,8 @@ declare let bootstrap: any;
     CommonModule,
     MatAutocompleteModule,
     MatInputModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    RouterModule
   ],
   templateUrl: './entree-piece.component.html',
   styleUrl: './entree-piece.component.scss',
@@ -39,13 +41,20 @@ export class EntreePieceComponent {
   margeBeneficiaire: string = '';
   dateExpiration: string = '';
 
-  entreePi = { dateEntree: '', idFournisseur: '', numeroBl: '', commentaire: '' };
+  entreePiece = { dateEntree: '', fournisseur: '', numeroBl: '', commentaire: '' };
 
   piecesAjoutees: any[] = [];
+  listePieceEntree: any[] = [];
 
   ngOnInit(): void {
-    console.log(this,this.piecesAjoutees);
+    this.loadEntreePiece();
   }
+
+  loadEntreePiece(): void {
+    this.entreeService.getEntreePiece().subscribe(data => this.listePieceEntree = data);
+    console.log(this.listePieceEntree);
+  }
+
 
   openAddModal() {
     const modalElement = document.getElementById('ajoutModal');
@@ -72,61 +81,81 @@ export class EntreePieceComponent {
 
   selectSuggestion(fournisseur: any) {
     this.query = fournisseur.nom;
-    this.idFournisseur = fournisseur._id;
+    this.entreePiece.fournisseur = fournisseur._id;
     this.fournisseurSuggestions = [];
   }
 
-  pieceSelectionnee: any = null; // Stocke la pièce sélectionnée depuis la suggestion
+  pieceSelectionnee: any = null;
 
-searchPiece() {
-  if (this.piece.length > 1) {
-    this.entreeService.searchPiece(this.piece).subscribe(
-      (data) => {
-        this.pieceSuggestions = data;
-      },
-      (error) => {
-        console.error('Erreur lors de la recherche:', error);
-      }
-    );
-  } else {
+  searchPiece() {
+    if (this.piece.length > 1) {
+      this.entreeService.searchPiece(this.piece).subscribe(
+        (data) => {
+          this.pieceSuggestions = data;
+        },
+        (error) => {
+          console.error('Erreur lors de la recherche:', error);
+        }
+      );
+    } else {
+      this.pieceSuggestions = [];
+    }
+  }
+
+  selectSuggestionPiece(piece1: any) {
+    this.piece = piece1.nomPiece + "(" + piece1.referencePiece + ")";
+    this.idPiece = piece1._id;
+    this.pieceSelectionnee = piece1.nomPiece;
     this.pieceSuggestions = [];
   }
-}
 
-selectSuggestionPiece(piece: any) {
-  this.piece = piece.nomPiece;
-  this.idPiece = piece._id;
-  this.pieceSelectionnee = piece; // Met à jour la pièce sélectionnée
-  this.pieceSuggestions = [];
-}
+  ajouterPiece() {
+    if (!this.piece || !this.prixUnitaire || !this.nombre || !this.margeBeneficiaire || !this.dateExpiration) {
+      alert('Veuillez remplir tous les champs avant d’ajouter.');
+      return;
+    }
 
-ajouterPiece() {
-  if (!this.piece || !this.prixUnitaire || !this.nombre || !this.margeBeneficiaire || !this.dateExpiration) {
-    alert('Veuillez remplir tous les champs avant d’ajouter.');
-    return;
+    this.piecesAjoutees.push({
+      piece: this.piece,
+      idPiece: this.idPiece,
+      prixUnitaire: this.prixUnitaire,
+      nombre: this.nombre,
+      margeBeneficiaire: this.margeBeneficiaire,
+      dateExpiration: this.dateExpiration
+    });
+
+
+    this.piece = '';
+    this.idPiece = '';
+    this.pieceSelectionnee = null;
+    this.prixUnitaire = '';
+    this.nombre = '';
+    this.margeBeneficiaire = '';
+    this.dateExpiration = '';
+    this.pieceSuggestions = [];
   }
-
-  this.piecesAjoutees.push({
-    piece: this.piece,
-    idPiece: this.idPiece,
-    prixUnitaire: this.prixUnitaire,
-    nombre: this.nombre,
-    margeBeneficiaire: this.margeBeneficiaire,
-    dateExpiration: this.dateExpiration
-  });
-
-  // Réinitialiser les champs après l'ajout
-  this.piece = '';
-  this.idPiece = '';
-  this.pieceSelectionnee = null; // Réinitialise la pièce sélectionnée
-  this.prixUnitaire = '';
-  this.nombre = '';
-  this.margeBeneficiaire = '';
-  this.dateExpiration = '';
-}
 
   supprimerPiece(index: number) {
     this.piecesAjoutees.splice(index, 1);
+  }
+
+  addEntreePiece(): void {
+    console.log('bye');
+    this.entreeService.addEntreePiece(this.entreePiece.dateEntree, this.entreePiece.fournisseur, this.entreePiece.numeroBl, this.entreePiece.commentaire, this.piecesAjoutees).subscribe(() => {
+      this.loadEntreePiece();
+      this.entreePiece = { dateEntree: '', fournisseur: '', numeroBl: '', commentaire: '' };
+      this.piece = '';
+      this.idPiece = '';
+      this.pieceSelectionnee = null;
+      this.prixUnitaire = '';
+      this.nombre = '';
+      this.margeBeneficiaire = '';
+      this.dateExpiration = '';
+      this.pieceSuggestions = [];
+      this.listePieceEntree = [];
+      this.piecesAjoutees = [];
+
+    });
   }
 
 

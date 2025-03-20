@@ -16,8 +16,8 @@ export class EntreePieceService {
     return this.http.get(this.apiUrl);
   }
 
-  addEntreePiece(dateEntree: string, idFournisseur: string, numeroBl: string): Observable<any> {
-    const body = { dateEntree, idFournisseur, numeroBl };
+  addEntreePiece(dateEntree: string, idFournisseur: string, numeroBl: string, commentaire: string, details: any): Observable<any> {
+    const body = { dateEntree, idFournisseur, numeroBl,commentaire,details };
     return this.http.post(this.apiUrl, body);
   }
 

@@ -11,12 +11,18 @@
           <tr>
             <th border="1">Date entree</th>
             <th border="1">Fournisseur</th>
-            <th border="1">Pays Fournisseur</th>
+            <th border="1">Numero Bl</th>
             <th border="1">Commentaire</th>
           </tr>
         </thead>
         <tbody>
-
+          <tr *ngFor="let entree of listePieceEntree; let i = index">
+            <td>{{ entree.dateEntree }}</td>
+            <td>{{ entree.fournisseur.nom }}</td>
+            <td>{{ entree.numeroBl }}</td>
+            <td>{{ entree.commentaire }}</td>
+            <td><button class="btn btn-warning mr-3" [routerLink]="['/detailEntreePiece', entree._id]">Details</button>
+          </tr>
         </tbody>
       </table>
     </app-card>
@@ -37,8 +43,8 @@
           <div class="mb-3">
             <div class="row">
               <div class="col-3">
-                <label for="nom" class="form-label">Date entree</label>
-                <input type="date" id="nom" name="nom" class="form-control" required />
+                <label for="dateEntree" class="form-label">Date entree</label>
+                <input type="date" id="dateEntree" name="dateEntree" [(ngModel)]="entreePiece.dateEntree" class="form-control" required />
               </div>
               <div class="col-3">
                 <label for="fournisseur" class="form-label">Fournisseur</label>
@@ -52,12 +58,12 @@
                 </ul>
               </div>
               <div class="col-3">
-                <label for="siteweb" class="form-label">Commentaire</label>
-                <input type="text" id="siteweb" name="siteweb" class="form-control" />
+                <label for="commentaire" class="form-label">Commentaire</label>
+                <input type="text" id="commentaire" name="commentaire" [(ngModel)]="entreePiece.commentaire" class="form-control" />
               </div>
               <div class="col-3">
-                <label for="siteweb" class="form-label">Numero Bl</label>
-                <input type="text" id="siteweb" name="siteweb" class="form-control" />
+                <label for="numeroBl" class="form-label">Numero Bl</label>
+                <input type="text" id="numeroBl" name="numeroBl" [(ngModel)]="entreePiece.numeroBl" class="form-control" />
               </div>
             </div>
 
@@ -70,12 +76,12 @@
                 <input type="text" id="piece" name="piece" class="form-control" [(ngModel)]="piece" (input)="searchPiece()" />
                 <ul *ngIf="pieceSuggestions.length > 0" class="list-group mt-2">
                   <li *ngFor="let piece of pieceSuggestions" class="list-group-item" (click)="selectSuggestionPiece(piece)">
-                    {{ piece.nomPiece }}
+                    {{ piece.nomPiece }}({{ piece.referencePiece }})
                   </li>
                 </ul>
               </div>
               <div class="col-2">
-                <label for="prixUnitaire" class="form-label">P.U</label>
+                <label for="prixUnitaire" class="form-label">P.U(Ar)</label>
                 <input type="text" id="prixUnitaire" name="prixUnitaire" class="form-control" [(ngModel)]="prixUnitaire" />
               </div>
               <div class="col-2">
@@ -83,7 +89,7 @@
                 <input type="text" id="nombre" name="nombre" class="form-control" [(ngModel)]="nombre" />
               </div>
               <div class="col-2">
-                <label for="margeBeneficiaire" class="form-label">Marge bénéficiaire</label>
+                <label for="margeBeneficiaire" class="form-label">Marge bénéficiaire(%)</label>
                 <input type="text" id="margeBeneficiaire" name="margeBeneficiaire" class="form-control" [(ngModel)]="margeBeneficiaire" />
               </div>
               <div class="col-2">
@@ -93,11 +99,11 @@
               <div class="col-1">
                 <label for="ajouterPiece" class="form-label">|</label>
                 <button
-                  class="btn btn-primary form-control"
-                  (click)="ajouterPiece()"
-                  [disabled]="!pieceSelectionnee || piece !== pieceSelectionnee.nomPiece">
-                  Plus
-                </button>
+                class="btn btn-primary form-control"
+                (click)="ajouterPiece()"
+                [disabled]="!pieceSelectionnee">
+                Plus
+              </button>
               </div>
             </div>
           </div>
@@ -107,9 +113,9 @@
             <thead>
               <tr>
                 <th>Pièce</th>
-                <th>P.U</th>
+                <th>P.U(Ar)</th>
                 <th>Nombre</th>
-                <th>Marge bénéficiaire</th>
+                <th>Marge bénéficiaire(%)</th>
                 <th>Date expiration</th>
                 <th>Action</th>
               </tr>
@@ -133,7 +139,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
-          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Enregistrer</button>
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="addEntreePiece()">Enregistrer</button>
         </div>
       </form>
     </div>

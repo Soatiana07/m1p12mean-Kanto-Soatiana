@@ -7,4 +7,4 @@ const DetailsEntreePieceSchema = new mongoose.Schema({
     dateExpiration: { type: Date},
     margeBeneficiaire: { type: Number, required: true }
 });
-module.exports = mongoose.model('DetailsEntreePiece', DetailsEntreePieceSchema);
+module.exports = mongoose.model('DetailsEntreePiece', DetailsEntreePieceSchema); 

@@ -38,5 +38,6 @@ app.use('/specialite', require('./routes/EmployeRoutes/specialiteRoutes'));
 app.use('/employe', require('./routes/EmployeRoutes/employeRoutes'));
 app.use('/specialiteEmploye', require('./routes/EmployeRoutes/specialiteEmployeRoutes'));
 app.use('/specialiteService', require('./routes/EmployeRoutes/specialiteServiceRoutes'));
+app.use('/stockPiece', require('./routes/ManagerRoutes/stockPieceRoutes'));
 
 app.listen(PORT, () => console.log(`Serveur démarré sur le port ${PORT}`))

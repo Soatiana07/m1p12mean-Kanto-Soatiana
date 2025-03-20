@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { CardComponent } from "../../theme/shared/components/card/card.component";
-import { PieceService } from 'src/app/services/Manager/piece.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { PieceService } from 'src/app/services/Manager/piece.service';
 declare let bootstrap: any;
 
 @Component({

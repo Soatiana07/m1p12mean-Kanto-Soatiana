@@ -17,7 +17,9 @@ router.post('/', async (req, res) => {
 // Liste
 router.get('/', async (req, res) => {
     try {
-        const specialiteService = await SpecialiteService.find();
+        const specialiteService = await SpecialiteService.find()
+        .populate('idService', 'nomService')  // Inclut le nom du service
+        .populate('idSpecialite', 'nomSpecialite'); // Inclut le nom de la spécialité
         res.json(specialiteService);
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -29,6 +31,7 @@ router.put('/:id', async (req, res) => {
     try {
         const specialiteService = await SpecialiteService.findByIdAndUpdate(req.params.id,
             req.body, { new: true });
+        console.log(req.body);
         res.json(specialiteService);
     } catch (error) {
         res.status(400).json({ message: error.message });
@@ -44,4 +47,17 @@ router.delete('/:id', async (req, res) => {
         res.status(500).json({messgae: error.message});
     }
 });
+
+// getByIdService
+router.get('/:idService', async (req, res) => {
+    try {
+        const services = await SpecialiteService.find({idService: req.params.idService})
+        .populate('idService', 'nomService')  // Inclut le nom du service
+        .populate('idSpecialite', 'nomSpecialite'); // Inclut le nom de la spécialité
+        res.json(services);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
 module.exports = router;

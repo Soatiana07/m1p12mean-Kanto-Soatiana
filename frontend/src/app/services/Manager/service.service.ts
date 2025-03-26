@@ -19,16 +19,13 @@ export class ServiceService {
   }
 
   // Create
-  addService(idCategorie: string, nomService: string, prixBase: string): Observable<any> {
-    const body ={ idCategorie, nomService, prixBase};
-    return this.http.post(this.apiUrl, body);
+  addService(service: any): Observable<any> {
+    return this.http.post(this.apiUrl, service);
   }
 
   // Update
-  updateService(id: string, idCategorie: string, nomService: string, prixBase: string): Observable<any> {
-    const body = {idCategorie, nomService, prixBase};
-    console.log(`${this.apiUrl}/${id}`);
-    return this.http.put(`${this.apiUrl}/${id}`, body);
+  updateService(id: string, service: any): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${id}`, service);
   }
 
   // Delete

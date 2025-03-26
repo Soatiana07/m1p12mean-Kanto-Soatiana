@@ -13,6 +13,7 @@ const EmployeSchema = new mongoose.Schema({
     adresse: {type: String, required: true},
     salaireBrut: {type: Number, required: true},
     salaireNet: {type: Number, required: true},
+    mdp: {type: String, required: true}
 }, {timestamps: true});
 
 module.exports = mongoose.model('Employe', EmployeSchema);

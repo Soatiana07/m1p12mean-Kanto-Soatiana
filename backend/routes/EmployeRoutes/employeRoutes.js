@@ -17,7 +17,8 @@ router.post('/', async (req, res) => {
 // Liste
 router.get('/', async (req, res) => {
     try {
-        const nomEmploye = await Employe.find();
+        const nomEmploye = await Employe.find()
+        .populate('idRole');
         res.json(nomEmploye);
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -44,4 +45,16 @@ router.delete('/:id', async (req, res) => {
         res.status(500).json({messgae: error.message});
     }
 });
+
+// get by id
+router.get('/:id', async (req, res) => {
+    try {
+        const employe = await Employe.findById(req.params.id)
+        .populate('idRole');
+        res.json(employe);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
 module.exports = router;

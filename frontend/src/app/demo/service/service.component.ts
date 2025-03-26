@@ -2,9 +2,10 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { CategorieServiceService } from 'src/app/services/Manager/categorie-service.service';
 import { ServiceService } from 'src/app/services/Manager/service.service';
 import { CardComponent } from 'src/app/theme/shared/components/card/card.component';
+import { HistoriquePrixServiceService } from 'src/app/services/Manager/historique-prix-service.service';
+
 
 declare let bootstrap: any;
 @Component({
@@ -13,15 +14,17 @@ declare let bootstrap: any;
   imports: [CardComponent, CommonModule, HttpClientModule, FormsModule],
   templateUrl: './service.component.html',
   styleUrl: './service.component.scss',
-  providers: [ServiceService]
+  providers: [ServiceService, HistoriquePrixServiceService]
 })
 export class ServiceComponent implements OnInit {
   categories: any[] = [];
   services: any[] = [];
-  newService = {idCategorie: '', nomService: '', prixBase: ''};
+  newService: any = {idCategorie: '', nomService: '', prixBase: ''};
   selectedService: any = {};
   constructor(
-    private serviceService: ServiceService) { }
+    private serviceService: ServiceService,
+    private historiquePrixServiceService : HistoriquePrixServiceService
+  ) { }
 
   // ngOnInit(): void {
   //   this.loadService();
@@ -39,35 +42,32 @@ export class ServiceComponent implements OnInit {
   }
 
   loadService(): void {
-    this.serviceService.getService().subscribe(data => {
-      // Associer chaque service à son nom de catégorie
-      this.services = data.map(service => ({
-        ...service,
-        nomCategorie: this.getNomCagetorie(service.idCategorie)
-      }));
-    });
+    this.serviceService.getService().subscribe(data => this.services = data);
   }
 
   // Ajout
   addService(): void {
-    const formData = new FormData();
+    this.serviceService.addService(this.newService).subscribe(
+      (savedService) => {
+        // Création de l'historique avec l'ID du service ajouté
+        const historique = {
+          date: new Date(),
+          idService: savedService._id, // Récupérer l'ID du service ajouté
+          prix: this.newService.prixBase
+        };
 
-    if (this.newService.idCategorie && this.newService.nomService && this.newService.prixBase) {
-        formData.append('idCategorie', this.newService.idCategorie);
-        formData.append('nomService', this.newService.nomService);
-        formData.append('prixBase', this.newService.prixBase);
-
-        console.log('Contenu de FormData :',formData);
-    } else {
-        console.log("Une des valeurs est undefined ou null !");
-    }
-
-    console.log(formData);
-    this.serviceService.addService(this.newService.idCategorie,this.newService.nomService, this.newService.prixBase).subscribe(() => {
-      this.loadService(); // Recharge la liste après ajout
-      this.newService = { idCategorie: '', nomService: '', prixBase: ''}; // Réinitialise le formulaire
-    });
+        // Ajouter l'historique après avoir ajouté le service
+        this.historiquePrixServiceService.addHistoriquePrixService(historique).subscribe(() => {
+          this.loadService(); // Recharger la liste des services
+          this.newService = {}; // Réinitialiser le formulaire
+        });
+      },
+      (error) => {
+        console.error("Erreur lors de l'ajout du service :", error);
+      }
+    );
   }
+
 
   // Suppression d'une année
   deleteService(id: string): void {
@@ -87,20 +87,36 @@ export class ServiceComponent implements OnInit {
   }
 
   // Update
-  updateService(id: string, idCategorie: string, nomService: string, prixBase: string): void {
-    if(id){
-      this.serviceService.updateService(id, idCategorie, nomService, prixBase).subscribe(() => {
-        this.loadService();
-        this.selectedService = { };
-      });
-    }
-    else{
-      console.log("Tsy hita le id");
+  updateService(): void {
+    if (this.selectedService && this.selectedService._id) {
+      this.serviceService.updateService(this.selectedService._id, this.selectedService).subscribe(
+        () => {
+          console.log("Prix base vaovao : ",this.selectedService.prixBase);
+            const historique = {
+              date: new Date(),
+              idService: this.selectedService._id,
+              prix: this.selectedService.prixBase
+            };
+
+            // Ajouter une entrée dans l'historique des prix
+            this.historiquePrixServiceService.addHistoriquePrixService(historique).subscribe(() => {
+              this.loadService(); // Recharger la liste des services
+            });
+
+          this.selectedService = {}; // Réinitialiser l'objet après mise à jour
+        },
+        (error) => {
+          console.error("Erreur lors de la mise à jour du service :", error);
+        }
+      );
+    } else {
+      console.log("ID du service introuvable !");
     }
   }
 
+
   confirmUpdateService(){
-    this.updateService(this.selectedService._id, this.selectedService.idCategorie,this.selectedService.nomService, this.selectedService.prixBase);
+    this.updateService();
   }
 
   openDeleteModal(service: any) {
@@ -114,12 +130,5 @@ export class ServiceComponent implements OnInit {
 
   confirmDeleteService(){
     this.deleteService(this.selectedService._id);
-  }
-
-// get nom categorie by idCategorie
-  getNomCagetorie(idCategorie: string): string {
-    const categorie = this.categories.find(cat => cat._id === idCategorie);
-    console.log("CATEGORIIIIIE : ", categorie);
-    return categorie ? categorie.nomCategorie : 'Non catégorisé';
   }
 }

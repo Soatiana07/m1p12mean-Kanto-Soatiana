@@ -16,7 +16,8 @@ router.post('/', async (req, res) => {
 //liste
 router.get('/', async (req, res) => {
     try {
-        const histo = await HistoriquePrixService.find();
+        const histo = await HistoriquePrixService.find()
+        .populate('idService');
         res.json(histo);
     } catch (error) {
         res.status(500).json({ message: error.message });

@@ -17,7 +17,9 @@ router.post('/', async (req, res) => {
 // Liste
 router.get('/', async (req, res) => {
     try {
-        const specialiteEmploye = await SpecialiteEmploye.find();
+        const specialiteEmploye = await SpecialiteEmploye.find()
+        .populate('idEmploye')
+        .populate('idSpecialite');
         res.json(specialiteEmploye);
     } catch (error) {
         res.status(500).json({ message: error.message });

@@ -8,7 +8,7 @@ import { environment } from 'src/environments/environment';
 })
 export class StockPieceService {
   private apiUrl = `${environment.apiUrl}/stockPiece`;
-  private apiUrlStockByPiece = `${environment.apiUrl}/stockByPiece`;
+  private apiUrlStockByPiece = `${environment.apiUrl}/stockPiece/stockByPiece`;
   constructor(private http: HttpClient) { }
 
     getStockPiece(): Observable<any> {
@@ -18,5 +18,6 @@ export class StockPieceService {
     getStockPieceByPiece(idPiece: string): Observable<any> {
       return this.http.get(`${this.apiUrlStockByPiece}/${idPiece}`);
     }
+
 
 }

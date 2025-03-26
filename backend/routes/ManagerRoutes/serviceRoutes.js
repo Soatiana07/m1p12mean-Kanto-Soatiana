@@ -43,4 +43,21 @@ router.delete('/:id', async (req, res) => {
         res.status(500).json({messgae: error.message});
     }
 });
+
+router.get('/chercheService', async (req, res) => {
+    try {
+        const query = req.query.q;
+        if (!query) {
+            return res.json([]); 
+        }
+        const piece = await Service.find({ 
+            $or: [
+                { nomService: { $regex: query, $options: 'i' } }
+              ]
+         });
+        res.json(piece);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
 module.exports = router;

@@ -9,6 +9,8 @@ import { environment } from 'src/environments/environment';
 export class MarqueVoitureService {
 
   private apiUrl = `${environment.apiUrl}/marqueVoiture`;
+  private apiUrlSearch = `${environment.apiUrl}/marqueVoiture/chercheMarqueVoiture`;
+  private apiUrlById = `${environment.apiUrl}/marqueVoiture/getMarqueId`;
   constructor(private http: HttpClient) { }
 
   getMarque(): Observable<any> {
@@ -33,4 +35,12 @@ export class MarqueVoitureService {
     return this.http.delete(`${this.apiUrl}/${id}`);
   }
 
+
+  searchMarque(query: string): Observable<any> {
+    return this.http.get(`${this.apiUrlSearch}?q=${query}`);
+  }
+
+  getMarqueById(id: string): Observable<any> {
+    return this.http.get(`${this.apiUrlById}/${id}`);
+  }
 }

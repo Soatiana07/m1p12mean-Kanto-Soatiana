@@ -1,22 +1,23 @@
 <ul class="nav flex-column">
   <li class="nav-item coded-menu-caption">
-    <button
-    (click)="toggleMenu()"
-    (keydown.enter)="toggleMenu()"
-    tabindex="0"
-    class="menu-button"
-  >
-    Manager
-  </button>
+    <button (click)="toggleMenu()" (keydown.enter)="toggleMenu()" tabindex="0" class="menu-button">
+      Manager
+    </button>
     <ul *ngIf="isMenuOpen" class="submenu">
       <li>
-        <a  href="marque" tabindex="0">MarqueVoiture</a>
+        <a href="marque" tabindex="0">MarqueVoiture</a>
+      </li>
+      <li>
+        <a href="modele" tabindex="0">Modele voiture</a>
       </li>
       <li>
         <a href="fournisseur" tabindex="0">Fournisseur</a>
       </li>
       <li>
         <a href="piece" tabindex="0">Pièce</a>
+      </li>
+      <li>
+        <a href="modePaiement" tabindex="0">Mode paiement</a>
       </li>
       <li>
         <a href="stockPiece" tabindex="0">Stock piece</a>
@@ -31,23 +32,39 @@
   </li>
 
   <li class="nav-item coded-menu-caption">
+    <button (click)="toggleMenuClient()" (keydown.enter)="toggleMenu()" tabindex="0" class="menu-button">
+      Client
+    </button>
+    <ul *ngIf="isMenuOpenClient" class="submenu">
+      <li>
+        <a href="demandeDevis" tabindex="0">Demande devis</a>
+      </li>
+    </ul>
+  </li>
+
+  <li class="nav-item coded-menu-caption">
     <label for="test">Test</label>
   </li>
 </ul>
 <!-- CSS -->
 <style>
   .menu-button {
-    background: transparent; /* Fond transparent */
-    border: none; /* Supprime la bordure */
-    cursor: pointer; /* Curseur en mode clic */
-    font-size: inherit; /* Garde la taille du texte */
+    background: transparent;
+    /* Fond transparent */
+    border: none;
+    /* Supprime la bordure */
+    cursor: pointer;
+    /* Curseur en mode clic */
+    font-size: inherit;
+    /* Garde la taille du texte */
 
   }
 
 
   .submenu {
     list-style: none;
-    padding-left: 16px; /* Indentation du sous-menu */
+    padding-left: 16px;
+    /* Indentation du sous-menu */
     display: block;
   }
 
@@ -59,6 +76,7 @@
   }
 
   .submenu li a:hover {
-    color: blue; /* Couleur au survol */
+    color: blue;
+    /* Couleur au survol */
   }
 </style>

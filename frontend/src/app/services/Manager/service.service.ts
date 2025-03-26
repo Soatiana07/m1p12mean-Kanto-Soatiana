@@ -37,4 +37,9 @@ export class ServiceService {
   getCategories(): Observable<any>{
     return this.http.get(this.apiUrlCategories);
   }
+
+  private apiUrlService = `${environment.apiUrl}/service/chercheService`;
+  searchService(query: string): Observable<any> {
+    return this.http.get(`${this.apiUrlService}?q=${query}`);
+  }
 }

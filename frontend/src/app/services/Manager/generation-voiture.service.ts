@@ -9,6 +9,8 @@ import { environment } from 'src/environments/environment';
 export class GenerationVoitureService {
 
   private apiUrl = `${environment.apiUrl}/generationVoiture`;
+  private apiUrlSearch = `${environment.apiUrl}/generationVoiture/chercheGenerationVoiture`;
+  private apiUrlById = `${environment.apiUrl}/generationVoiture/getGenerationById`;
   constructor(private http: HttpClient) { }
 
   // Liste
@@ -33,5 +35,13 @@ export class GenerationVoitureService {
   // Delete
   deleteGeneration(id: string): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${id}`);
+  }
+
+  searchGeneration(query: string): Observable<any> {
+    return this.http.get(`${this.apiUrlSearch}?q=${query}`);
+  }
+
+  getGenerationById(id: string): Observable<any> {
+    return this.http.get(`${this.apiUrlById}/${id}`);
   }
 }

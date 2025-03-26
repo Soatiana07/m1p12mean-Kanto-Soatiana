@@ -5,12 +5,13 @@ import { HttpClientModule } from '@angular/common/http';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  imports: [RouterOutlet, SpinnerComponent,MatAutocompleteModule ,MatInputModule,MatFormFieldModule,HttpClientModule]
+  imports: [RouterOutlet, SpinnerComponent,MatAutocompleteModule ,MatInputModule,MatFormFieldModule,HttpClientModule,BsDatepickerModule]
 })
 export class AppComponent {
   title = 'Garage';

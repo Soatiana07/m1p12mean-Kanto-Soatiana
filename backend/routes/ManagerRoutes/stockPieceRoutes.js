@@ -31,7 +31,7 @@ router.get('/', async (req, res) => {
 
 router.get('/stockByPiece/:idPiece', async (req, res) => {
     try {
-        const stock = await StockPiece.findOne({ idPiece: req.params.idPiece })
+        const stock = await StockPiece.find({ idPiece: req.params.idPiece })
         .populate("idPiece")  
         .exec();
         const stockAvecPrixTotal = stock.map(item => ({

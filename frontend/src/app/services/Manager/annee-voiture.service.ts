@@ -9,6 +9,8 @@ import { environment } from 'src/environments/environment';
 export class AnneeVoitureService {
 
   private apiUrl = `${environment.apiUrl}/anneeVoiture`;
+  private apiUrlSearch = `${environment.apiUrl}/anneeVoiture/chercheAnneeVoiture`;
+  private apiUrlById = `${environment.apiUrl}/anneeVoiture/getAnneeById`;
   constructor(private http: HttpClient) { }
 
   // Liste
@@ -19,13 +21,13 @@ export class AnneeVoitureService {
 
   // Create
   addAnnee(annee: string, note: string): Observable<any> {
-    const body ={ annee,note};
+    const body = { annee, note };
     return this.http.post(this.apiUrl, body);
   }
 
   // Update
   updateAnnee(id: string, annee: string, note: string): Observable<any> {
-    const body = {annee, note};
+    const body = { annee, note };
     console.log(`${this.apiUrl}/${id}`);
     return this.http.put(`${this.apiUrl}/${id}`, body);
   }
@@ -33,5 +35,13 @@ export class AnneeVoitureService {
   // Delete
   deleteAnnee(id: string): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${id}`);
+  }
+
+  searchAnnee(query: string): Observable<any> {
+    return this.http.get(`${this.apiUrlSearch}?q=${query}`);
+  }
+
+  getAnneeById(id: string): Observable<any> {
+    return this.http.get(`${this.apiUrlById}/${id}`);
   }
 }

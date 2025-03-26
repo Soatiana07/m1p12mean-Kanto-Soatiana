@@ -30,4 +30,21 @@ router.put('/:id', async (req, res) => {
         res.status(400).json({ message: error.message });
     }
 });
+
+router.get('/detailSortiePieceByPiece/:idSortiePiece', async (req, res) => {
+    try {
+        const detail = await DetailsSortiePiece.find({ idSortiePiece: req.params.idSortiePiece })
+        .populate("idPiece")  
+        .exec(); 
+
+        const details = detail.map(item => ({
+            ...item.toObject(),
+            prixTotal: (item.qte * (item.prixVente || 0) )
+        }));
+        console.log(details);
+        res.json(details);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
 module.exports = router;

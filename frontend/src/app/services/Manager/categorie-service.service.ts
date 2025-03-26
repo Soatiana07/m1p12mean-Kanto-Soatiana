@@ -18,16 +18,14 @@ export class CategorieServiceService {
   }
 
   // Create
-  addCategorieService(nomCategorie: string): Observable<any> {
-    const body ={ nomCategorie};
-    return this.http.post(this.apiUrl, body);
+  addCategorieService(categorie: FormData): Observable<any> {
+    return this.http.post(this.apiUrl, categorie);
   }
 
   // Update
-  updateCategorieService(id: string, nomCategorie: string): Observable<any> {
-    const body = {nomCategorie};
-    console.log(`${this.apiUrl}/${id}`);
-    return this.http.put(`${this.apiUrl}/${id}`, body);
+  updateCategorieService(id: string, categorie: string): Observable<any> {
+    console.log('bonjour');
+    return this.http.put(`${this.apiUrl}/${id}`, categorie);
   }
 
   // Delete

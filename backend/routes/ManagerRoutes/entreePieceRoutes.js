@@ -6,6 +6,7 @@ const StockPiece = require('../../models/Manager/StockPiece');
 
 router.post('/', async (req, res) => {
     try {
+        //  ajout d'une entree
         const { dateEntree, idFournisseur, numeroBl, commentaire, details } = req.body;
         const dateNaissanceObj = new Date(dateEntree);
         const entree = new EntreePiece({
@@ -17,6 +18,7 @@ router.post('/', async (req, res) => {
         );
         await entree.save();
 
+        // ajout des details;
         const pieces = req.body.details;
         for (const piece of pieces) {
             const detail = new DetailsEntreePiece({
@@ -30,6 +32,7 @@ router.post('/', async (req, res) => {
             await detail.save();
         }
 
+        // update stock
         for (const piece1 of pieces) {   
             const stock = await StockPiece.findOne({ idPiece: piece1.idPiece });
             if (stock) {

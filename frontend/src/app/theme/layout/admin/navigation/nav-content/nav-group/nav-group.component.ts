@@ -47,9 +47,14 @@ export class NavGroupComponent implements OnInit {
   }
 
   isMenuOpen = false;
+  isMenuOpenClient = false;
 
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;
+  }
+
+  toggleMenuClient() {
+    this.isMenuOpenClient = !this.isMenuOpenClient;
   }
 
   handleClick(option: string) {

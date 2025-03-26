@@ -2,12 +2,22 @@
 <div class="row">
   <div class="col-sm-12">
     <app-card cardTitle="Categorie service">
-      <form (submit)="addCategorie()">
+      <form (submit)="addCategorie()" autocomplete="off">
         <div class="row">
           <div class="col-4">
-            <input type="text" class="form-control" [(ngModel)]="newCategorie.nomCategorie" name="nomCategorie" placeholder="Categorie service" required>
+            <label>Categorie service</label>
+            <input type="text" class="form-control" [(ngModel)]="newCategorie.nomCategorie" name="nomCategorie"  required>
           </div>
           <div class="col-4">
+            <label>Photo</label>
+            <input type="file" (change)="onFileSelected($event)" name="photo" [(ngModel)]="photo.photo"
+              class="form-control">
+          </div>
+          <div class="col-4">
+            <label>Categorie service</label>
+            <textarea class="form-control" [(ngModel)]="newCategorie.description" name="descriptionCategorie" required></textarea>
+          </div>
+          <div class="col-4 mt-3">
             <button class="btn btn-primary">Ajouter</button>
           </div>
         </div>
@@ -17,12 +27,23 @@
         <thead>
           <tr>
             <th>Categorie service</th>
-            <th>Note</th>
+            <th>Description</th>
+            <th>Image</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let categorie of categories">
             <td>{{ categorie.nomCategorie }}</td>
+            <td>{{ categorie.description }}</td>
+            <td style="position: relative;">
+              <img [src]="'data:image/jpeg;base64,' + categorie.imageCategorie"
+                   alt="Photo de l'étudiant"
+                   style="width: 50px; height: 50px; object-fit: cover; transition: transform 0.3s ease, box-shadow 0.3s ease;"
+                   onmouseover="this.style.transform='scale(5)'; this.style.position='absolute'; this.style.zIndex='10'; this.style.boxShadow='0 0 10px rgba(0,0,0,0.5)';"
+                   onmouseout="this.style.transform='scale(1)'; this.style.position='static'; this.style.zIndex='1'; this.style.boxShadow='none';">
+            </td>
+
+
             <td>
               <button class="btn btn-warning btn-sm" (click)="openUpdateModal(categorie)">Modifier</button>
               <button class="btn btn-danger btn-sm" (click)="openDeleteModal(categorie)">Supprimer</button>
@@ -47,7 +68,16 @@
           <div class="mb-3">
             <label for="categorie" class="form-label">Categorie service</label>
             <input type="text" [(ngModel)]="selectedCategorie.nomCategorie" name="nomCategorie" class="form-control" required />
-
+          </div>
+          <div class="mb-3">
+            <label for="categorie" class="form-label">Photo</label>
+            <input type="hidden" name="photo" [(ngModel)]="selectedCategorie.imageCategorie">
+            <input type="file" (change)="onFileSelected($event)" name="nouveauPhoto"
+              [(ngModel)]="nouveauPhoto.nouveauPhoto" class="form-control">
+          </div>
+          <div class="mb-3">
+            <label for="categorie" class="form-label">Description</label>
+            <input type="text" [(ngModel)]="selectedCategorie.description" name="description" class="form-control" required />
           </div>
         </form>
       </div>

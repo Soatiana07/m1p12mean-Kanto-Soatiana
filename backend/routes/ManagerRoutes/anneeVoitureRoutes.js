@@ -45,4 +45,28 @@ router.delete('/:id', async (req, res) => {
     }
 });
 
+router.get('/chercheAnneeVoiture', async (req, res) => {
+    try {
+        const query = req.query.q;
+        if (!query) {
+            return res.json([]); 
+        }
+        const anneeV = await AnneeVoiture.find(
+                { annee: { $regex: query, $options: 'i' } }
+              );
+        res.json(anneeV);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
+router.get('/getAnneeById/:id', async (req, res) => {
+    try {
+        const annee = await AnneeVoiture.find({ _id: req.params.id });
+        res.json(annee);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
 module.exports = router;

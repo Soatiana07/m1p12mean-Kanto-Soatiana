@@ -15,8 +15,8 @@ declare let bootstrap: any;
   providers: [CategorieServiceService]
 })
 export class CategorieServiceComponent implements OnInit {
-  categories: any[] = []; // ✅ Initialisation correcte
-  newCategorie = { nomCategorie : ''};
+  categories: any[] = [];
+  newCategorie = { nomCategorie : '', description: ''}; //
   isEditing = false; // Indicateur de modification
   selectedCategorie: any = {};
   constructor(private categorieServiceService: CategorieServiceService) { }
@@ -38,6 +38,10 @@ export class CategorieServiceComponent implements OnInit {
 
     if (this.newCategorie.nomCategorie) {
         formData.append('nomCategorie', this.newCategorie.nomCategorie);
+        formData.append('description', this.newCategorie.description);
+        if (this.selectedFile) {
+          formData.append('photo', this.selectedFile);
+        }
 
         console.log('Contenu de FormData :',formData);
     } else {
@@ -45,9 +49,10 @@ export class CategorieServiceComponent implements OnInit {
     }
 
     console.log(formData);
-    this.categorieServiceService.addCategorieService(this.newCategorie.nomCategorie).subscribe(() => {
+    this.categorieServiceService.addCategorieService(formData).subscribe(() => {
       this.loadCategorie(); // Recharge la liste après ajout
-      this.newCategorie = { nomCategorie: ''}; // Réinitialise le formulaire
+      this.newCategorie = { nomCategorie: '', description: ''}; // Réinitialise le formulaire
+      this.selectedFile = null;
     });
   }
 
@@ -96,6 +101,16 @@ export class CategorieServiceComponent implements OnInit {
 
   confirmDeleteCategorie(){
     this.deleteCategorie(this.selectedCategorie._id);
+  }
+
+  photo ={ photo: ''};
+  selectedFile: File | null = null;
+  nouveauPhoto = { nouveauPhoto:''};
+  onFileSelected(event: Event): void {
+    const fileInput = event.target as HTMLInputElement;
+    if (fileInput.files && fileInput.files.length > 0) {
+      this.selectedFile = fileInput.files[0];
+    }
   }
 
 }

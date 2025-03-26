@@ -49,34 +49,23 @@
 <!-- Services Section -->
 <section id="services" class="container py-5">
   <h2 class="text-center">Nos Services</h2>
+
   <div class="row mt-4">
-      <div class="col-md-4">
-          <div class="card service-card">
-              <img src="https://source.unsplash.com/400x300/?car-repair" class="card-img-top" alt="Réparation">
-              <div class="card-body">
-                  <h5 class="card-title">Réparations</h5>
-                  <p class="card-text">Nous réparons toutes les marques de voitures avec expertise.</p>
-              </div>
-          </div>
+    <div class="col-md-4" *ngFor="let service of visibleServices; let i = index">
+      <div class="card service-card animate__animated animate__fadeIn">
+        <img [src]="service.img" class="card-img-top" [alt]="service.title">
+        <div class="card-body">
+          <h5 class="card-title">{{ service.title }}</h5>
+          <p class="card-text">{{ service.text }}</p>
+        </div>
       </div>
-      <div class="col-md-4">
-          <div class="card service-card">
-              <img src="https://source.unsplash.com/400x300/?car-maintenance" class="card-img-top" alt="Entretien">
-              <div class="card-body">
-                  <h5 class="card-title">Entretien</h5>
-                  <p class="card-text">Gardez votre voiture en parfait état avec notre service d'entretien.</p>
-              </div>
-          </div>
-      </div>
-      <div class="col-md-4">
-          <div class="card service-card">
-              <img src="https://source.unsplash.com/400x300/?tire" class="card-img-top" alt="Changement de pneus">
-              <div class="card-body">
-                  <h5 class="card-title">Changement de pneus</h5>
-                  <p class="card-text">Nous proposons un large choix de pneus adaptés à votre véhicule.</p>
-              </div>
-          </div>
-      </div>
+    </div>
+  </div>
+
+  <!-- Navigation -->
+  <div class="d-flex justify-content-between mt-4">
+    <button class="btn btn-primary" (click)="prev()" [disabled]="currentIndex === 0"><</button>
+    <button class="btn btn-primary" (click)="next()" [disabled]="currentIndex + servicesPerPage >= services.length">></button>
   </div>
 </section>
 

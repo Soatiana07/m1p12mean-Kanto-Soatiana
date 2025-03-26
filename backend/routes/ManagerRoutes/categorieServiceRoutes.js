@@ -1,14 +1,21 @@
 const express = require('express');
 const router = express.Router();
 const CategorieService = require('../../models/Manager/CategorieService');
-
+const multer = require('multer');
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 // insert
-router.post('/', async (req, res) => {
+router.post('/', upload.single('photo'), async (req, res) => {
     try {
-        console.log(req.body);
-        const nomCategorie = new CategorieService(req.body);
-        await nomCategorie.save();
-        res.status(201).json(nomCategorie);
+        const imageBase64 = req.file.buffer.toString('base64');
+        const { nomCategorie ,description} = req.body;
+        const categorie = new CategorieService({
+            nomCategorie,
+            imageCategorie: imageBase64,
+            description
+        });
+        await categorie.save();
+        res.status(201).json(categorie);
     } catch (error) {
         res.status(400).json({ message: error.message });
     }
@@ -27,9 +34,18 @@ router.get('/', async (req, res) => {
 // Update
 router.put('/:id', async (req, res) => {
     try {
-        const nomCategorie = await CategorieService.findByIdAndUpdate(req.params.id,
-            req.body, { new: true });
-        res.json(nomCategorie);
+        console.log('moa va tonga aty');
+        const { nomCategorie ,description, image} = req.body;
+        let imageBase64 = image;
+
+        if (req.file) {
+            imageBase64 = req.file.buffer.toString('base64');
+        }
+        const data = { nomCategorie,imageCategorie: imageBase64,description };
+
+        const categorie = await CategorieService.findByIdAndUpdate(req.params.id,
+            data, { new: true });
+        res.json(categorie);
     } catch (error) {
         res.status(400).json({ message: error.message });
     }

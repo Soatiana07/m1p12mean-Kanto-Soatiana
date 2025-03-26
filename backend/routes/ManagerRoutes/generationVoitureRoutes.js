@@ -5,7 +5,6 @@ const GenerationVoiture = require('../../models/Manager/GenerationVoiture');
 // insert
 router.post('/', async (req, res) => {
     try {
-        console.log(req.body);
         const generation = new GenerationVoiture(req.body);
         await generation.save();
         res.status(201).json(generation);
@@ -44,4 +43,30 @@ router.delete('/:id', async (req, res) => {
         res.status(500).json({messgae: error.message});
     }
 });
+
+
+router.get('/chercheGenerationVoiture', async (req, res) => {
+    try {
+        const query = req.query.q;
+        if (!query) {
+            return res.json([]); 
+        }
+        const generatyionV = await GenerationVoiture.find(
+                { generation: { $regex: query, $options: 'i' } }
+              );
+        res.json(generatyionV);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
+router.get('/getGenerationById/:id', async (req, res) => {
+    try {
+        const generatyionV = await GenerationVoiture.find({ _id: req.params.id });
+        res.json(generatyionV);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
 module.exports = router;

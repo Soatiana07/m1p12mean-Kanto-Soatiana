@@ -16,14 +16,9 @@ app.use((req, res, next) => {
     next();
 });
 app.use(authMiddleware);
-const MONGO_URI = process.env.MONGO_URI; // Récupérer l'URI de MongoDB
 
-if (!MONGO_URI) {
-  console.error(" Erreur : MONGO_URI est undefined. Vérifiez votre fichier .env !");
-  process.exit(1);
-}
 // Connexion a MongoDB
-mongoose.connect(process.env.MONGO_URI, {
+mongoose.connect('mongodb+srv://Mekansoa:123@cluster0.ojr4aqy.mongodb.net/Mekansoa?retryWrites=true&w=majority&appName=Cluster0', {
     // useNewUrlParser: true,
     // useUnifiedTopology: true
 }).then(() => console.log("MongoBD connecté"))

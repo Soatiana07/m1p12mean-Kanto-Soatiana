@@ -8,10 +8,10 @@ const app = express();
 
 // Middleware
 app.use(cors({
-    origin: '*', // Remplace '*' par ton domaine exact si possible
+    origin: '*', // Remplace par ton frontend en prod: 'https://ton-front.com'
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization', 'X-Connecte'],
-    exposedHeaders: ['X-Connecte']
+    exposedHeaders: ['X-Connecte'] // Ajoute cette ligne pour exposer le header !
   }));
   
 app.use(express.json());

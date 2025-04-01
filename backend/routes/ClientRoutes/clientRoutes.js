@@ -47,9 +47,10 @@ router.delete('/:id', async (req, res) => {
 // Login
 router.post('/login', async (req, res) => {
     try {
-        console.log("heyyyy");
+        
         const { email, mdp } = req.body;
-
+        console.log(req.body);
+        
         if (!email || !mdp) {
             return res.status(400).json({ error: "L'email et le mot de passe sont requis." });
         }

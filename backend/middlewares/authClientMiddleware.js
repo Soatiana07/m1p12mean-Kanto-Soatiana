@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 
 module.exports = async (req, res, next) => {
     try { 
-        console.log("tonga aty za");
+        console.log("tonga aty zaaaaaa");
         console.log("req.path :", req.path);
         
         if (req.path === "/client/login" || req.path === "/client/logout" || req.path === "/client") {

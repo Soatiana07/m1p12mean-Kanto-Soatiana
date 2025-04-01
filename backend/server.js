@@ -54,5 +54,5 @@ app.use('/client', require('./routes/ClientRoutes/clientRoutes'));
 app.use('/modeleVoiture', require('./routes/ManagerRoutes/modeleVoitureRoutes'));
 app.use('/voitureClient', require('./routes/ClientRoutes/voitureClientRoutes'));
 
-// module.exports = app;
-app.listen(PORT, () => console.log(`Serveur démarré sur le port ${PORT}`))
+module.exports = app;
+// app.listen(PORT, () => console.log(`Serveur démarré sur le port ${PORT}`))

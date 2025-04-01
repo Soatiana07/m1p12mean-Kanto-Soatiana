@@ -1,19 +1,26 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const authMiddleware = require('./middlewares/authClientMiddleware');
 require('dotenv').config();
 
-const app = express()
-const PORT = process.env.PORT || 5000;
+const app = express();
 
-// Middlware
+// Middleware
 app.use(cors());
 app.use(express.json());
+app.use(authMiddleware);
+app.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization, X-Connecte");
+    res.header("Access-Control-Expose-Headers", "X-Connecte");
+    next();
+});
 
 // Connexion a MongoDB
 mongoose.connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
+    // useNewUrlParser: true,
+    // useUnifiedTopology: true
 }).then(() => console.log("MongoBD connecté"))
 .catch(err => console.log(err));
 
@@ -39,5 +46,7 @@ app.use('/employe', require('./routes/EmployeRoutes/employeRoutes'));
 app.use('/specialiteEmploye', require('./routes/EmployeRoutes/specialiteEmployeRoutes'));
 app.use('/specialiteService', require('./routes/EmployeRoutes/specialiteServiceRoutes'));
 app.use('/stockPiece', require('./routes/ManagerRoutes/stockPieceRoutes'));
+app.use('/client', require('./routes/ClientRoutes/clientRoutes'));
 
-app.listen(PORT, () => console.log(`Serveur démarré sur le port ${PORT}`))
+module.exports = app;
+// app.listen(PORT, () => console.log(`Serveur démarré sur le port ${PORT}`))

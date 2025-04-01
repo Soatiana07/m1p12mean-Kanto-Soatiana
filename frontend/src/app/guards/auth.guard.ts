@@ -18,7 +18,7 @@ export class AuthGuard implements CanActivate {
             console.log('Connecte ato : ', connecte);
 
             if (connecte === 0) {
-                return true; // ✅ L'utilisateur est connecté
+                return true; 
             } else {
                 this.router.navigate(['/loginClient']);
                 return false;

@@ -10,6 +10,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(authMiddleware);
+
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization, X-Connecte");
@@ -18,6 +19,8 @@ app.use((req, res, next) => {
     next();
 });
 
+
+const PORT = process.env.PORT || 5000;
 // Connexion a MongoDB
 mongoose.connect(process.env.MONGO_URI, {
     // useNewUrlParser: true,
@@ -49,5 +52,5 @@ app.use('/specialiteService', require('./routes/EmployeRoutes/specialiteServiceR
 app.use('/stockPiece', require('./routes/ManagerRoutes/stockPieceRoutes'));
 app.use('/client', require('./routes/ClientRoutes/clientRoutes'));
 
-module.exports = app;
-// app.listen(PORT, () => console.log(`Serveur démarré sur le port ${PORT}`))
+// module.exports = app;
+app.listen(PORT, () => console.log(`Serveur démarré sur le port ${PORT}`))

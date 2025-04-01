@@ -9,7 +9,12 @@ const app = express();
 // Middleware
 // app.use(cors());
 app.use(cors({
-  origin: 'http://localhost:4200'}));
+    origin: 'http://localhost:4200', // Autorise uniquement votre frontend
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    allowedHeaders: 'Content-Type, Authorization',
+    credentials: true // Si vous utilisez des cookies ou des sessions
+  }));
+  
 app.use(express.json());
 app.use(authMiddleware);
 app.use((req, res, next) => {

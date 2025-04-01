@@ -4,7 +4,7 @@ module.exports = async (req, res, next) => {
     try { 
         console.log("req.path :", req.path);
         
-        if (req.path === "/client/login" || req.path === "/client/logout") {
+        if (req.path === "/client/login" || req.path === "/client/logout" || req.path === "/client") {
             return next();
         }
 

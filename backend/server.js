@@ -17,8 +17,14 @@ app.use((req, res, next) => {
     next();
 });
 
+const MONGO_URI = process.env.MONGO_URI; // Récupérer l'URI de MongoDB
+
+if (!MONGO_URI) {
+  console.error(" Erreur : MONGO_URI est undefined. Vérifiez votre fichier .env !");
+  process.exit(1);
+}
 // Connexion a MongoDB
-mongoose.connect(process.env.MONGO_URI, {
+mongoose.connect(MONGO_URI, {
     // useNewUrlParser: true,
     // useUnifiedTopology: true
 }).then(() => console.log("MongoBD connecté"))

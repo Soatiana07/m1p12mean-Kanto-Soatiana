@@ -8,7 +8,6 @@ const app = express();
 
 // Middleware
 app.use(cors());
-app.use(authMiddleware);
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization, X-Connecte");
@@ -16,7 +15,7 @@ app.use((req, res, next) => {
     res.header("Access-Control-Expose-Headers", "X-Connecte");
     next();
 });
-
+app.use(authMiddleware);
 const MONGO_URI = process.env.MONGO_URI; // Récupérer l'URI de MongoDB
 
 if (!MONGO_URI) {
@@ -24,7 +23,7 @@ if (!MONGO_URI) {
   process.exit(1);
 }
 // Connexion a MongoDB
-mongoose.connect(MONGO_URI, {
+mongoose.connect(process.env.MONGO_URI, {
     // useNewUrlParser: true,
     // useUnifiedTopology: true
 }).then(() => console.log("MongoBD connecté"))

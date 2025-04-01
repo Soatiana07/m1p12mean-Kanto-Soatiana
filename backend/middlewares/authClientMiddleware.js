@@ -24,7 +24,7 @@ module.exports = async (req, res, next) => {
         
         req.client = decoded;
         res.setHeader('X-Connecte', '0');  
-        console.log('Header X-Connecte ajoutéeeeeee:', res.getHeader('X-Connecte'));
+        console.log('Header X-Connecte ajoutéeeeeee:', res.getHeaders('X-Connecte'));
 
         next();
     } catch (error) {

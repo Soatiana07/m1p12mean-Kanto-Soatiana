@@ -7,23 +7,19 @@ require('dotenv').config();
 const app = express();
 
 // Middleware
-app.use(cors({
-    origin: '*', // Remplace par ton frontend en prod: 'https://ton-front.com'
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization', 'X-Connecte'],
-    exposedHeaders: ['X-Connecte'] // Ajoute cette ligne pour exposer le header !
-  }));
+app.use(cors());
   
 app.use(express.json());
 app.use(authMiddleware);
 
-// app.use((req, res, next) => {
-//     res.header("Access-Control-Allow-Origin", "*");
-//     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization, X-Connecte");
-//     res.header("Access-Control-Allow-Methods","GET,PUT,POST,DELETE,OPTIONS");
-//     res.header("Access-Control-Expose-Headers", "X-Connecte");
-//     next();
-// });
+app.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization, X-Connecte");
+    res.header("Access-Control-Allow-Methods","GET,PUT,POST,DELETE,OPTIONS");
+    res.header("Access-Control-Expose-Headers", "X-Connecte");
+    console.log("Headers envoyés dans la réponse :", res.getHeaders());
+    next();
+});
 
 
 const PORT = process.env.PORT || 5000;

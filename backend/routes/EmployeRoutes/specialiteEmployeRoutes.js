@@ -46,4 +46,32 @@ router.delete('/:id', async (req, res) => {
         res.status(500).json({messgae: error.message});
     }
 });
+
+router.post('/getEmployeBySpecialite', async (req, res) => {
+    try {
+        console.log('jjjjjjjjjjjj');
+        const { groupesServiceSpecialtite } = req.body;
+        console.log('Services reçus:', groupesServiceSpecialtite);
+        console.log('kkkkkkkkk');
+        console.log(groupesServiceSpecialtite[0]?.specialites[0]?._id);
+        let employe = [];
+
+        for (const service of groupesServiceSpecialtite) {
+            for (const specialite of service.specialites) { // Parcours toutes les spécialités du service
+                const result = await SpecialiteEmploye.find({ idSpecialite: specialite._id }) 
+                    .populate('idEmploye', 'nom')
+                    .populate('idSpecialite', 'nomSpecialite')
+                    .exec(); 
+        
+                employe.push(...result);
+            }
+        }
+        
+        console.log(employe);
+        res.json(employe);
+    } catch (error) {
+        console.error('Erreur:', error);
+        res.status(500).json({ message: error.message });
+    }
+});
 module.exports = router;

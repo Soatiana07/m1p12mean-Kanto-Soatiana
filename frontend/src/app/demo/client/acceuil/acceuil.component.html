@@ -3,7 +3,7 @@
 <!-- Hero Section -->
 <header class="hero">
   <div class="container">
-    <h1>Bienvenue chez Men-Kan'Soa</h1>
+    <h1>Bienvenue chez Men-Kan'Soa </h1>
     <p>Votre véhicule, notre passion, votre satisfaction.</p>
   </div>
 </header>
@@ -16,7 +16,7 @@
 
 <!-- Services Section -->
 <section id="services" class="container py-5">
-  <h2 class="text-center">Nos Services</h2>
+  <h2 class="text-center">Nos categories de services</h2>
 
   <div class="row mt-4">
     <div class="col-md-4" *ngFor="let categorie of visibleCategorie; let i = index">
@@ -44,28 +44,40 @@
     <button class="btn btn-primary" (click)="prev()" [disabled]="currentIndex === 0"><</button>
 
     <button class="btn btn-primary" (click)="next()"
-      [disabled]="currentIndex + categoriesPerPage >= services.length">></button>
+      [disabled]="currentIndex + categoriesPerPage >= categories.length">></button>
   </div>
 </section>
 
-<!-- Contact Section -->
-<section id="contact" class="contact text-center">
-  <h2>Contactez-nous</h2>
-  <p>Appelez-nous au <strong>+33 1 23 45 67 89</strong> ou envoyez-nous un message :</p>
-  <form class="container">
-    <div class="mb-3">
-      <input type="text" class="form-control" placeholder="Votre nom">
-    </div>
-    <div class="mb-3">
-      <input type="email" class="form-control" placeholder="Votre email">
-    </div>
-    <div class="mb-3">
-      <textarea class="form-control" rows="4" placeholder="Votre message"></textarea>
-    </div>
-    <button type="submit" class="btn btn-primary">Envoyer</button>
-  </form>
-</section>
 
+<!-- Services a domicile Section -->
+<section id="services" class="container py-5">
+  <h2 class="text-center">Nos services a domicile</h2>
+
+  <div class="row mt-4">
+    <div class="col-md-4" *ngFor="let service of visibleServiceDmicile; let i = index">
+      <div class="card service-card animate__animated animate__fadeIn"
+        style="width: 300px; border-radius: 15px; overflow: hidden; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); transition: transform 0.3s ease, box-shadow 0.3s ease; background: white; text-align: center; padding: 20px; position: relative;">
+
+
+        <div class="card-body">
+          <h5 class="card-title" style="font-size: 1.3rem; color: #333; margin-top: 15px;">{{ service.idCategorie.nomCategorie }}
+          </h5>
+          <p class="card-text" style="color: #777;">{{service.nomService}}</p>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+
+  <!-- Navigation -->
+  <div class="d-flex justify-content-between mt-4">
+    <button class="btn btn-primary" (click)="prevServiceDomicile()" [disabled]="currentIndexService === 0"><</button>
+
+    <button class="btn btn-primary" (click)="nextServiceDomicile()"
+      [disabled]="currentIndexService + servicesDomicilePerPage >= serviceDomicile.length">></button>
+  </div>
+</section>
 
 
 

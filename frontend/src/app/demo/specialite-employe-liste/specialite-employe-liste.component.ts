@@ -16,7 +16,7 @@ import { EmployeService } from 'src/app/services/Manager/employe.service';
 declare let bootstrap: any;
 @Component({
   selector: 'app-specialite-service-service',
-  imports: [CardComponent,
+  imports: [
     HttpClientModule,
     FormsModule,
     CommonModule,

@@ -10,10 +10,11 @@ const nodemailer = require('nodemailer');
 // insert
 router.post('/', async (req, res) => {
     try {
-        const { dateDemandeDevis, idVoitureClient, details } = req.body;
+        const { dateDemandeDevis, idVoitureClient, details, isDomicile } = req.body;
         const demande = new DemandeDevis({
             dateDemandeDevis,
-            idVoitureClient
+            idVoitureClient,
+            isDomicile
         });
         await demande.save();
 
@@ -35,7 +36,7 @@ router.post('/', async (req, res) => {
             }
         });
 
-        const text = "Le client a soumis une demande de devis en date du " + dateDemandeDevis + ", correspondant au devis numero DEVIS_" + demande._id;
+        const text = "Le client a soumis une demande de devis en date du " + dateDemandeDevis;
         const mailOptions = {
             from: 'kantomiharizo@gmail.com',
             to: "kantomiharizo@gmail.com",
@@ -56,6 +57,7 @@ router.post('/', async (req, res) => {
 router.get('/', async (req, res) => {
     try {
         const demande = await DemandeDevis.find()
+            .sort({ dateDemandeDevis: -1 })
             .populate({
                 path: "idVoitureClient",
                 populate: [
@@ -123,7 +125,7 @@ router.post('/send-email', async (req, res) => {
     }
 });
 
-router.post('/send-email1', upload.single('attachment'), async (req, res) => {
+router.post('/envoieDemandeDevis', upload.single('attachment'), async (req, res) => {
     const { to, subject, text } = req.body;
     const attachment = req.file; // Récupération du fichier PDF
 
@@ -148,13 +150,16 @@ router.post('/send-email1', upload.single('attachment'), async (req, res) => {
             : []
     };
 
+    let reponse = "";
     try {
         const info = await transporter.sendMail(mailOptions);
         console.log('Email envoyé : ' + info.response);
-        res.status(200).json({ message: 'Email envoyé avec succès!' });
+        reponse = "envoyer";
+        res.json(reponse);
     } catch (error) {
         console.error('Erreur lors de l\'envoi :', error);
-        res.status(500).json({ error: 'Erreur lors de l\'envoi de l\'email.' });
+        reponse = "erreur";
+        res.json(reponse);
     }
 });
 
@@ -163,22 +168,34 @@ router.post('/send-email1', upload.single('attachment'), async (req, res) => {
 
 router.post('/ajoutPieceDemandeDevis', async (req, res) => {
     try {
-        console.log("ankino");
-        const { heureFini, minuteFini, idDemandeDevis, details, noteVoiture,services} = req.body;
-        console.log(services);
+        const { heureFini, minuteFini, idDemandeDevis, details, noteVoiture, services, frais, prixServiceSurPlus } = req.body;
         const demande = await DemandeDevis.findOne({ _id: idDemandeDevis });
-       
-        console.log(demande);
         demande.dateDemandeDevis = demande.dateDemandeDevis,
-        demande.heureFini = Number(heureFini),
-        demande.minuteFini = Number(minuteFini)
+            demande.heureFini = Number(heureFini),
+            demande.minuteFini = Number(minuteFini),
+            demande.frais = Number(frais)
         await demande.save();
 
-        for( const service of services){
-            const serv = await DetailsDemandeDevis.findOne({ _id: service._id });
-            serv.prixBaseService = Number(service.idService.prixBase);
-            await serv.save();
+        if (prixServiceSurPlus.length > 0) {
+            for (let i = 0; i < services.length; i++) {
+                const serv = await DetailsDemandeDevis.findOne({ _id: services[i]._id });
+                if (serv) {
+                    serv.prixBaseService = Number(services[i].idService.prixBase);
+                    serv.prixServiceSurPlus = Number(prixServiceSurPlus[i]);
+                    await serv.save();
+                }
+            }
+        } else {
+            for (let i = 0; i < services.length; i++) {
+                const serv = await DetailsDemandeDevis.findOne({ _id: services[i]._id });
+                if (serv) {
+                    serv.prixBaseService = Number(services[i].idService.prixBase);
+                    await serv.save();
+                }
+            }
         }
+
+
 
         const pieces = req.body.details;
         if (!pieces || pieces.length === 0) {

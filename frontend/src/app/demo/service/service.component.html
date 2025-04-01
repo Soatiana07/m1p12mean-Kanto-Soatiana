@@ -2,23 +2,33 @@
 <div class="row">
   <div class="col-sm-12">
     <app-card cardTitle="Service">
-      <form (submit)="addService()">
+      <form (submit)="addService()" autocomplete="off">
         <div class="row">
-          <div class="col-4">
-            <select class="form-control" [(ngModel)]="newService.idCategorie" name="idCategorie" placeholder="Categorie service" required>
+          <div class="col-3">
+            <label>Categorie</label>
+            <select class="form-control" [(ngModel)]="newService.idCategorie" name="idCategorie" required>
               <option disabled>Catégorie</option>
               <option *ngFor="let categorie of categories" [value]="categorie._id">
                 {{categorie.nomCategorie}}
               </option>
             </select>
           </div>
-          <div class="col-4">
-            <input type="text" class="form-control" [(ngModel)]="newService.nomService" name="nomService" placeholder="Nom service" required>
+          <div class="col-3">
+            <label>Nom service</label>
+            <input type="text" class="form-control" [(ngModel)]="newService.nomService" name="nomService"  required>
           </div>
-          <div class="col-4">
-            <input type="number" class="form-control" [(ngModel)]="newService.prixBase" name="prixBase" placeholder="Prix de base" required>
+          <div class="col-3">
+            <label>Prix de base</label>
+            <input type="number" class="form-control" [(ngModel)]="newService.prixBase" name="prixBase"  required>
           </div>
-          <div class="col-4">
+          <div class="col-3">
+            <label>A domicile </label>
+            <select class="form-control" [(ngModel)]="newService.isDomicile" name="isDomicile" required>
+              <option value="0">Non</option>
+              <option value="1">Oui</option>
+            </select>
+          </div>
+          <div class="col-3 mt-2">
             <button class="btn btn-primary">Ajouter</button>
           </div>
         </div>
@@ -30,6 +40,7 @@
             <th>Catégorie</th>
             <th>Service</th>
             <th>Prix base</th>
+            <th>A domicile</th>
           </tr>
         </thead>
         <tbody>
@@ -37,6 +48,7 @@
             <td>{{ service.idCategorie.nomCategorie }}</td>
             <td>{{ service.nomService }}</td>
             <td>{{ service.prixBase }}</td>
+            <td>{{ service.isDomicile === 0 ? 'Non' : 'Oui' }}</td>
             <td>
               <button class="btn btn-warning btn-sm" (click)="openUpdateModal(service)">Modifier</button>
               <button class="btn btn-danger btn-sm" (click)="openDeleteModal(service)">Supprimer</button>

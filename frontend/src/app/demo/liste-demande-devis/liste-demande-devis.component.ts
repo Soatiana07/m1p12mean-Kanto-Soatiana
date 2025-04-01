@@ -30,4 +30,16 @@ export class ListeDemandeDevisComponent {
     this.demandeDevisService.getDemandeDevis().subscribe(data => this.listeDemandeDevis = data);
 
   }
+
+  getFormattedDate(dateString: string): string {
+    const date = new Date(dateString);
+    return date.toLocaleString('fr-FR', {
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+    });
+  }
+
 }

@@ -50,12 +50,49 @@ router.get('/chercheService', async (req, res) => {
         if (!query) {
             return res.json([]); 
         }
-        const piece = await Service.find({ 
+        const service = await Service.find({ 
             $or: [
                 { nomService: { $regex: query, $options: 'i' } }
               ]
          });
-        res.json(piece);
+        res.json(service);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+router.get('/serviceADomicile', async (req, res) => {
+    try {
+        const query = req.query.q;
+        if (!query) {
+            return res.json([]); 
+        }
+        let filter = { 
+            isDomicile: 1, 
+            nomService: { $regex: query, $options: 'i' }
+        };
+        const service = await Service.find(filter)
+        .populate('idCategorie');
+        res.json(service);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
+router.get('/getAllServiceADomicile', async (req, res) => {
+    try {
+        const service = await Service.find({ isDomicile: 1})
+        .populate('idCategorie');
+        res.json(service);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
+router.get('/getServiceById/:id', async (req, res) => {
+    try {
+        const voiture = await Service.find({ _id: req.params.id });
+
+        res.json(voiture);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

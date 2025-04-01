@@ -35,6 +35,20 @@ export class ProfilComponent {
     private voitureService: VoitureClientService
   ) { }
 
+  clientConnecte: any = null;
+  idClienteConnecte: string ='';
+  ngOnInit(): void {
+    const storedClient = localStorage.getItem('clientconnecte');
+
+    if (storedClient) {
+      this.clientConnecte = JSON.parse(storedClient);
+      this.idClienteConnecte = this.clientConnecte._id;
+    } else {
+      console.log("Aucun client connecte.");
+    }
+    this.loadVoitureByClient();
+  }
+
   numeroSerie: string = '';
   openAjoutVoiture() {
     const modalElement = document.getElementById('ajoutVoiture');
@@ -146,23 +160,23 @@ export class ProfilComponent {
   }
 
   addVoitureClient(): void {
-    this.voitureService.addVoitureClient("67e006a23bb8e24349f2ab66", this.idAnnee, this.idGeneration, this.idMarque, this.idModele, this.numeroSerie).subscribe(() => {
+    this.voitureService.addVoitureClient(this.idClienteConnecte, this.idAnnee, this.idGeneration, this.idMarque, this.idModele, this.numeroSerie).subscribe(() => {
       this.numeroSerie = '';
       this.idAnnee = '';
       this.idGeneration = '';
       this.idMarque = '';
       this.idModele = '';
       this.loadVoitureByClient();
-
+      window.location.reload();
     });
   }
 
-  ngOnInit(): void {
-    this.loadVoitureByClient();
-  }
+
 
   listeVoitures: any[] = [];
   loadVoitureByClient(): void {
-    this.voitureService.getVoitureByClient("67e006a23bb8e24349f2ab66").subscribe(data => this.listeVoitures = data);
+    if(this.clientConnecte){
+      this.voitureService.getVoitureByClient(this.idClienteConnecte).subscribe(data => this.listeVoitures = data);
+    }
   }
 }

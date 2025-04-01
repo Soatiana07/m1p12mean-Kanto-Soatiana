@@ -26,7 +26,6 @@ router.get('/', async (req, res) => {
 
 router.get('/getVoitureClientById/:idClient', async (req, res) => {
     try {
-        console.log("hey");
         const voiture = await VoitureClient.find({ idClient: req.params.idClient })
         .populate("idClient")
         .populate("idAnnee")  

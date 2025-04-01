@@ -9,7 +9,6 @@ const EmployeSchema = new mongoose.Schema({
     sexe: {type: String, required: true},
     telephone: {type: String, required: true},
     email: {type: String, required: true},
-    photo: {type: String, required: true},
     adresse: {type: String, required: true},
     salaireBrut: {type: Number, required: true},
     salaireNet: {type: Number, required: true},

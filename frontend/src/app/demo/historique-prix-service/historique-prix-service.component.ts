@@ -11,7 +11,7 @@ import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-historique-prix-service',
-  imports: [CardComponent,
+  imports: [
     HttpClientModule,
     FormsModule,
     CommonModule,

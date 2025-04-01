@@ -44,4 +44,17 @@ export class ServiceService {
   searchService(query: string): Observable<any> {
     return this.http.get(`${this.apiUrlService}?q=${query}`,{ headers: this.headers });
   }
+
+  private apiUrlServiceDomicile = `${environment.apiUrl}/service/serviceADomicile`;
+  // Liste a domicile
+  getServiceDomicile(query: string): Observable<any> {
+    console.log(`${this.apiUrlServiceDomicile}?q=${query}`);
+    return this.http.get(`${this.apiUrlServiceDomicile}?q=${query}`,{ headers: this.headers });
+  }
+
+  private apiUrAlllServiceDomicile = `${environment.apiUrl}/service/getAllServiceADomicile`;
+  // Liste a domicile
+  getAllServiceDomicile(): Observable<any> {
+    return this.http.get(`${this.apiUrAlllServiceDomicile}`,{ headers: this.headers });
+  }
 }

@@ -43,6 +43,20 @@
   </li>
 
   <li class="nav-item coded-menu-caption">
+    <button (click)="toggleMenuMecanicien()" (keydown.enter)="toggleMenu()" tabindex="0" class="menu-button">
+      Mecanicien
+    </button>
+    <ul *ngIf="isMenuOpenFournisseur" class="submenu">
+      <li>
+        <a href="planningMecanicien" tabindex="0">Planning</a>
+      </li>
+      <li>
+        <a href="calendrierMecanicien" tabindex="0">Calendrier</a>
+      </li>
+    </ul>
+  </li>
+
+  <li class="nav-item coded-menu-caption">
     <label for="test">Test</label>
   </li>
 </ul>

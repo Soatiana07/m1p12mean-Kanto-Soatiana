@@ -14,7 +14,7 @@ import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-employe-details',
-  imports: [CardComponent,
+  imports: [
       HttpClientModule,
       FormsModule,
       CommonModule,

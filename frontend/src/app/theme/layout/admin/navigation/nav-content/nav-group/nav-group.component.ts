@@ -48,6 +48,7 @@ export class NavGroupComponent implements OnInit {
 
   isMenuOpen = false;
   isMenuOpenClient = false;
+  isMenuOpenFournisseur = false;
 
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;
@@ -55,6 +56,10 @@ export class NavGroupComponent implements OnInit {
 
   toggleMenuClient() {
     this.isMenuOpenClient = !this.isMenuOpenClient;
+  }
+
+  toggleMenuMecanicien() {
+    this.isMenuOpenFournisseur = !this.isMenuOpenFournisseur;
   }
 
   handleClick(option: string) {

@@ -16,33 +16,56 @@ declare let bootstrap: any;
     FormsModule, HeaderProfilComponent, FooterProfilComponent],
   templateUrl: './acceuil.component.html',
   styleUrl: './acceuil.component.scss',
-  providers: [ServiceService,CategorieServiceService, VoitureClientService]
+  providers: [ServiceService, CategorieServiceService, VoitureClientService]
 })
 export class AcceuilComponent {
   constructor(private serviceService: ServiceService,
-    private categorieService : CategorieServiceService
+    private categorieService: CategorieServiceService
   ) { }
 
   categories: any[] = [];
+  clientConnecte: any = null;
 
   ngOnInit(): void {
     this.loadCategorie();
+    this.loadAllServiceDomicile();
+    const storedClient = localStorage.getItem('clientconnecte');
+
+    if (storedClient) {
+      this.clientConnecte = JSON.parse(storedClient);
+    } else {
+      console.log("Aucun client connecte.");
+    }
   }
 
 
   loadCategorie(): void {
-    console.log('ito eeee');
     this.categorieService.getCategorieService().subscribe(data => this.categories = data);
   }
 
-  services = [
-    { img: "https://source.unsplash.com/400x300/?car-repair", title: "Réparations", text: "Nous réparons toutes les marques de voitures avec expertise." },
-    { img: "https://source.unsplash.com/400x300/?car-maintenance", title: "Entretien", text: "Gardez votre voiture en parfait état avec notre service d'entretien." },
-    { img: "https://source.unsplash.com/400x300/?tire", title: "Changement de pneus", text: "Nous proposons un large choix de pneus adaptés à votre véhicule." },
-    { img: "https://source.unsplash.com/400x300/?oil", title: "Vidange", text: "Service de vidange rapide et efficace." },
-    { img: "https://source.unsplash.com/400x300/?battery", title: "Batteries", text: "Remplacement et vérification des batteries." },
-    { img: "https://source.unsplash.com/400x300/?brakes", title: "Freins", text: "Entretien et remplacement des freins." }
-  ];
+  serviceDomicile: any[] = [];
+  loadAllServiceDomicile(): void {
+    this.serviceService.getAllServiceDomicile().subscribe(data => this.serviceDomicile = data);
+  }
+
+  currentIndexService = 0;
+  servicesDomicilePerPage = 3;
+
+  get visibleServiceDmicile() {
+    return this.serviceDomicile.slice(this.currentIndexService, this.currentIndexService + this.servicesDomicilePerPage);
+  }
+
+  nextServiceDomicile() {
+    if (this.currentIndexService + this.servicesDomicilePerPage < this.serviceDomicile.length) {
+      this.currentIndexService += this.servicesDomicilePerPage;
+    }
+  }
+
+  prevServiceDomicile() {
+    if (this.currentIndexService > 0) {
+      this.currentIndexService -= this.servicesDomicilePerPage;
+    }
+  }
 
   currentIndex = 0;
   categoriesPerPage = 3;

@@ -18,8 +18,8 @@ router.post('/', async (req, res) => {
 router.get('/', async (req, res) => {
     try {
         const specialiteService = await SpecialiteService.find()
-        .populate('idService', 'nomService')  // Inclut le nom du service
-        .populate('idSpecialite', 'nomSpecialite'); // Inclut le nom de la spécialité
+            .populate('idService', 'nomService')  // Inclut le nom du service
+            .populate('idSpecialite', 'nomSpecialite'); // Inclut le nom de la spécialité
         res.json(specialiteService);
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -42,20 +42,43 @@ router.put('/:id', async (req, res) => {
 router.delete('/:id', async (req, res) => {
     try {
         await SpecialiteService.findByIdAndDelete(req.params.id);
-        res.json({message: "SpecialiteService supprimé"});
+        res.json({ message: "SpecialiteService supprimé" });
     } catch (error) {
-        res.status(500).json({messgae: error.message});
+        res.status(500).json({ messgae: error.message });
     }
 });
 
 // getByIdService
 router.get('/:idService', async (req, res) => {
     try {
-        const services = await SpecialiteService.find({idService: req.params.idService})
-        .populate('idService', 'nomService')  // Inclut le nom du service
-        .populate('idSpecialite', 'nomSpecialite'); // Inclut le nom de la spécialité
+        const services = await SpecialiteService.find({ idService: req.params.idService })
+            .populate('idService', 'nomService')  // Inclut le nom du service
+            .populate('idSpecialite', 'nomSpecialite'); // Inclut le nom de la spécialité
         res.json(services);
     } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
+router.post('/getSpecialiteByService', async (req, res) => {
+    try {
+        const { services } = req.body;
+
+        let specialite = [];
+
+        for (const service of services) {
+            const result = await SpecialiteService.find({ idService: service.idService._id })
+                .populate('idService', 'nomService')
+                .populate('idSpecialite', 'nomSpecialite')
+                .exec(); 
+
+          
+            specialite.push(...result);
+        }
+
+        res.json(specialite);
+    } catch (error) {
+        console.error('Erreur:', error);
         res.status(500).json({ message: error.message });
     }
 });

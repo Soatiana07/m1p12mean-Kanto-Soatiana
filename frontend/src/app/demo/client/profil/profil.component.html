@@ -11,7 +11,14 @@
 </header>
 
 
-<section id="about" class="container text-center py-5">
+<section id="about" class="container  py-5">
+  <div *ngIf="clientConnecte">
+    <p>Nom: {{ clientConnecte.nom }}</p>
+    <p>Email: {{ clientConnecte.email }}</p>
+    <p>Adresse: {{ clientConnecte.adresse }}</p>
+    <p>Tel: {{ clientConnecte.telephone }}</p>
+  </div>
+
   <table class="table table-striped table-hover mt-3">
     <thead>
       <tr>

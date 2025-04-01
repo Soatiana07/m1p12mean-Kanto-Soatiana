@@ -38,4 +38,10 @@ export class SpecialiteServiceService {
   updateSpecialiteService(specialiteService: any): Observable<any>{
     return this.http.put(`${this.apiUrl}/${specialiteService._id}`, specialiteService,{ headers: this.headers });
   }
+
+  private apiUrlByService = `${environment.apiUrl}/specialiteService/getSpecialiteByService`;
+  getSpecialiteByService(services: any[]): Observable<any> {
+    const body = { services};
+    return this.http.post(this.apiUrlByService, body);
+  }
 }

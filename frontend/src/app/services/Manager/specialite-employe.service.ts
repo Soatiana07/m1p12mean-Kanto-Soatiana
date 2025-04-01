@@ -38,5 +38,11 @@ export class SpecialiteEmployeService {
   updateSpecialiteEmploye(specialiteEmploye: any): Observable<any>{
     return this.http.put(`${this.apiUrl}/${specialiteEmploye._id}`, specialiteEmploye);
   }
-  
+
+
+  private apiUrlBySpecialite = `${environment.apiUrl}/specialiteEmploye/getEmployeBySpecialite`;
+  getEmployeBySpecialite(groupesServiceSpecialtite: any[]): Observable<any> {
+    const body = { groupesServiceSpecialtite};
+    return this.http.post(this.apiUrlBySpecialite, body);
+  }
 }

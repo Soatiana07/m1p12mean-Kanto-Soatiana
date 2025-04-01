@@ -19,7 +19,7 @@ declare let bootstrap: any;
 export class ServiceComponent implements OnInit {
   categories: any[] = [];
   services: any[] = [];
-  newService: any = {idCategorie: '', nomService: '', prixBase: ''};
+  newService: any = {idCategorie: '', nomService: '', prixBase: '', isDomicile: ''};
   selectedService: any = {};
   constructor(
     private serviceService: ServiceService,

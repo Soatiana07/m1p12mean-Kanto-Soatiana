@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { DemandeDevisService } from 'src/app/services/Client/demande-devis.service';
 import { DetailDemandeDevisService } from 'src/app/services/Client/detail-demande-devis.service';
 import { CardComponent } from "../../theme/shared/components/card/card.component";
@@ -21,7 +21,8 @@ declare let bootstrap: any;
   imports: [CardComponent,
     FormsModule,
     CommonModule,
-    HttpClientModule
+    HttpClientModule,
+    RouterModule
   ],
   templateUrl: './details-demande-devis.component.html',
   styleUrl: './details-demande-devis.component.scss',
@@ -36,6 +37,7 @@ export class DetailsDemandeDevisComponent {
   listeDemandedevis: any[] = [];
   listeDetailDemandedevis: any[] = [];
   listeDetailPieceDemande: any[] = [];
+  prixSurplus: any[] =[];
   constructor(private route: ActivatedRoute,
     private demandeDevisService: DemandeDevisService,
     private detailDemandeService: DetailDemandeDevisService,
@@ -50,7 +52,7 @@ export class DetailsDemandeDevisComponent {
     this.loadDetailPieceDemandeDevis();
     this.getTotalPiece();
     this.getTotalService();
-    this.getTotalServiceApres();
+    this.prixSurplus = new Array(this.listeDetailDemandedevis.length).fill('');
   }
 
 
@@ -58,6 +60,8 @@ export class DetailsDemandeDevisComponent {
   noteTotal: number = 0;
   heureFini: string ='00';
   minuteFini: string ='00';
+  heureFiniAvant: string='00';
+  minuteFiniAvant: string='00';
   loadDemandeDevis(): void {
     this.demandeDevisService.getDemandeDevisById(this.idDemande).subscribe(data => {
       this.listeDemandedevis = data;
@@ -67,8 +71,8 @@ export class DetailsDemandeDevisComponent {
           this.listeDemandedevis[0]?.idVoitureClient?.idModele?.note +
           this.listeDemandedevis[0]?.idVoitureClient?.idGeneration?.note) / 4
       ).toFixed(2));
-      this.heureFini = this.listeDemandedevis[0]?.heureFini;
-      this.minuteFini = this.listeDemandedevis[0]?.minuteFini;
+      this.heureFini = String(this.listeDemandedevis[0]?.heureFini).padStart(2, '0');
+      this.minuteFini = String(this.listeDemandedevis[0]?.minuteFini).padStart(2, '0');
     });
   }
 
@@ -88,23 +92,12 @@ export class DetailsDemandeDevisComponent {
 
   getTotalService(): number {
     return this.listeDetailDemandedevis.reduce((total, service) => {
-      return total +  (service.idService.prixBase * this.noteTotal) * service.qte;
+      const prixServiceSurPlus = service.prixServiceSurPlus ?? 0;
+      return total + ((service.idService.prixBase * this.noteTotal) +prixServiceSurPlus ) * service.qte;
     }, 0);
   }
 
-  getTotalServiceApres(): number {
-    return this.listeDetailDemandedevis.reduce((total, service) => {
-      return total + (service.prixBaseService * this.noteTotal) * service.qte;
-    }, 0);
-  }
 
-  getTotalDevisAvant(): number {
-    return this.getTotalPiece()+this.getTotalService();
-  }
-
-  getTotalDevisApres(): number {
-    return this.getTotalPiece()+this.getTotalServiceApres();
-  }
 
 
   loadDetailPieceDemandeDevis(): void {
@@ -193,10 +186,13 @@ export class DetailsDemandeDevisComponent {
 
 
 
+  frais: number = 0;
+
   addPieceDemandeDevis(): void {
-    this.demandeDevisService.ajoutPieceDemandeDevis(this.heureFini, this.minuteFini, this.idDemande, this.piecesAjoutees, this.noteTotal, this.listeDetailDemandedevis).subscribe(() => {
+    this.demandeDevisService.ajoutPieceDemandeDevis(this.heureFiniAvant, this.minuteFiniAvant, this.idDemande, this.piecesAjoutees, this.noteTotal, this.listeDetailDemandedevis,this.frais,this.prixSurplus).subscribe(() => {
       this.loadDetailDemandeDevis();
       this.loadDemandeDevis();
+      this.loadDetailPieceDemandeDevis();
       this.piecesAjoutees=[];
 
     });
@@ -242,6 +238,7 @@ export class DetailsDemandeDevisComponent {
   // }
 
 
+  reponseMail: string='';
   envoieDevisMail() {
     const element = document.getElementById('pdfDevis');
 
@@ -271,15 +268,55 @@ export class DetailsDemandeDevisComponent {
 
             const formData = new FormData();
             formData.append('to', 'randrianoely2512@gmail.com'); // Mettre l'email du destinataire
-            formData.append('subject', 'Votre PDF');
-            formData.append('text', 'Veuillez trouver ci-joint le fichier PDF.');
+            formData.append('subject', 'Reponse demande devis');
+            formData.append('text', `Bonjour Madame, Monsieur
+
+              Veuillez trouver en pièce jointe le devis correspondant à votre demande. Nous vous remercions pour votre patience et restons à votre disposition pour toute information complémentaire.
+
+              Nous espérons avoir l'opportunité de vous accompagner dans la réparation de votre véhicule et vous assurons un service de qualité.
+
+              N'hésitez pas à nous contacter pour toute question.
+
+              Cordialement,
+
+              Me-kansoa
+              kantomiharizo@gmail.com
+              034 11 481 57
+              Andoharanofotsy `);
+
             formData.append('attachment', pdfBlob, 'devis.pdf');
 
-            this.demandeDevisService.envoieMail(formData).subscribe(() => {
-
+            this.demandeDevisService.envoieMail(formData).subscribe(data =>  {
+              this.reponseMail = data;
+              console.log(this.reponseMail);
+              if(this.reponseMail=="envoyer"){
+                const modalElement = document.getElementById('devisEnvoyer');
+                if (modalElement) {
+                  const modalInstance = new bootstrap.Modal(modalElement);
+                  modalInstance.show();
+                }
+              }else{
+                const modalElement = document.getElementById('devisNonEnvoyer');
+                if (modalElement) {
+                  const modalInstance = new bootstrap.Modal(modalElement);
+                  modalInstance.show();
+                }
+              }
             });
         });
     }
+}
+
+
+getFormattedDate(dateString: string): string {
+  const date = new Date(dateString);
+  return date.toLocaleString('fr-FR', {
+    year: 'numeric',
+    month: 'numeric',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+  });
 }
 
 

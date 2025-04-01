@@ -20,6 +20,7 @@ export class EmployeService {
   // Liste
   getEmploye(): Observable<any> {
     console.log(this.apiUrl);
+    console.log("hiiiiiiiii ",this.headers);
     return this.http.get(this.apiUrl,{ headers: this.headers });
   }
 

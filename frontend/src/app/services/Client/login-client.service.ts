@@ -54,8 +54,8 @@ export class LoginClientService{
 
     return this.http.get(this.apiUrl, { headers, observe: 'response' }).pipe(
       map(response => {
-        console.log("Headers avy any am loginclientservice ",headers);
-        const connecteHeader = response.headers.get('X-Connecte'); 
+        console.log("Headers de la réponse:", response.headers.keys()); // Debug: voir tous les headers
+        const connecteHeader = response.headers.get('X-Connecte');
         console.log('X-Connecte Header:', connecteHeader);
 
         return connecteHeader !== null ? parseInt(connecteHeader, 10) : 1;
@@ -67,7 +67,7 @@ export class LoginClientService{
         return of(1);
       })
     );
-}
+  }
 
 
 }

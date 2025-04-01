@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
@@ -11,8 +11,6 @@ export class DetailDemandeDevisService {
   private apiUrl = `${environment.apiUrl}/detailDemandeDevis`;
   private apiUrlDetailDemandeDevisById = `${environment.apiUrl}/detailDemandeDevis/getDetailServiceDemandeDevisById`;
   private apiUrlDetaiPieceDemandeDevisById = `${environment.apiUrl}/detailDemandeDevis/getDetailPieceDemandeDevisById`;
-  private headers = new HttpHeaders().set('Authorization', `Bearer ${localStorage.getItem('token')}`);
-
   constructor(private http: HttpClient) { }
 
   getDetailsDemandeDevis(): Observable<any> {
@@ -21,15 +19,15 @@ export class DetailDemandeDevisService {
 
   addDetailsDemandeDevis(idDemandeDevis: string, details: any): Observable<any> {
     const body = { idDemandeDevis, details};
-    return this.http.post(this.apiUrl, body,{ headers: this.headers });
+    return this.http.post(this.apiUrl, body);
   }
 
   getDetailDemandeDevisById(idDemandeDevis: string): Observable<any> {
-    return this.http.get(`${this.apiUrlDetailDemandeDevisById}/${idDemandeDevis}`,{ headers: this.headers });
+    return this.http.get(`${this.apiUrlDetailDemandeDevisById}/${idDemandeDevis}`);
   }
 
   getDetailPieceDemandeDevisById(idDemandeDevis: string): Observable<any> {
     console.log(`${this.apiUrlDetaiPieceDemandeDevisById}/${idDemandeDevis}`);
-    return this.http.get(`${this.apiUrlDetaiPieceDemandeDevisById}/${idDemandeDevis}`,{ headers: this.headers });
+    return this.http.get(`${this.apiUrlDetaiPieceDemandeDevisById}/${idDemandeDevis}`);
   }
 }

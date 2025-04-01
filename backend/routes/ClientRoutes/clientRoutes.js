@@ -47,6 +47,7 @@ router.delete('/:id', async (req, res) => {
 // Login
 router.post('/login', async (req, res) => {
     try {
+        console.log("heyyyy");
         const { email, mdp } = req.body;
 
         if (!email || !mdp) {

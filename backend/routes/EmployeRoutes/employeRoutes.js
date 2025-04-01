@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const Employe = require('../../models/Employe/Employe');
+const authMiddleware = require('../../middlewares/authClientMiddleware');
 
 // insert
-router.post('/', async (req, res) => {
+router.post('/',async (req, res) => {
     try {
         console.log(req.body);
         const nomEmploye = new Employe(req.body);
@@ -15,7 +16,7 @@ router.post('/', async (req, res) => {
 });
 
 // Liste
-router.get('/', async (req, res) => {
+router.get('/',authMiddleware, async (req, res) => {
     try {
         const nomEmploye = await Employe.find()
         .populate('idRole');
@@ -26,7 +27,7 @@ router.get('/', async (req, res) => {
 });
 
 // Update
-router.put('/:id', async (req, res) => {
+router.put('/:id',async (req, res) => {
     try {
         const nomEmploye = await Employe.findByIdAndUpdate(req.params.id,
             req.body, { new: true });
@@ -37,7 +38,7 @@ router.put('/:id', async (req, res) => {
 });
 
 // delete
-router.delete('/:id', async (req, res) => {
+router.delete('/:id',async (req, res) => {
     try {
         await Employe.findByIdAndDelete(req.params.id);
         res.json({message: "employe supprimé"});
@@ -47,7 +48,7 @@ router.delete('/:id', async (req, res) => {
 });
 
 // get by id
-router.get('/:id', async (req, res) => {
+router.get('/:id',async (req, res) => {
     try {
         const employe = await Employe.findById(req.params.id)
         .populate('idRole');

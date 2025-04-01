@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
-import { Observable, firstValueFrom } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { catchError, map, switchMap } from 'rxjs/operators';
 import { LoginClientService } from '../services/Client/login-client.service';
 
 @Injectable({
@@ -8,30 +9,27 @@ import { LoginClientService } from '../services/Client/login-client.service';
 })
 export class AuthGuard implements CanActivate {
   constructor(private loginClientService: LoginClientService, private router: Router) {}
-
-  async canActivate(
+  canActivate(
     next: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot,
-  ): Promise<boolean> { // ✅ Correction : Utilisation de Promise<boolean>
-    const token = localStorage.getItem('token'); // Récupère le token depuis localStorage
-    const idClientConnecte = this.loginClientService.getIdClientByToken(token);
+    state: RouterStateSnapshot
+): Observable<boolean> {
+    return this.loginClientService.verifyToken().pipe(
+        map((connecte) => {
+            console.log('Connecte ato : ', connecte);
 
-    if (!token) {
-      this.router.navigate(['/loginClient']); // Si pas de token, rediriger vers login
-      return false;
-    }
+            if (connecte === 0) {
+                return true; // ✅ L'utilisateur est connecté
+            } else {
+                this.router.navigate(['/loginClient']);
+                return false;
+            }
+        }),
+        catchError((error) => {
+            console.error('Erreur:', error);
+            this.router.navigate(['/loginClient']);
+            return of(false);
+        })
+    );
+}
 
-    try {
-      const isValid = await firstValueFrom(this.loginClientService.getValidTokens(idClientConnecte[0]?.idClient)); // ✅ Correction avec firstValueFrom()
-      if (isValid) {
-        return true; // L'utilisateur peut accéder à la page
-      } else {
-        this.router.navigate(['/loginClient']);
-        return false;
-      }
-    } catch (error) {
-      this.router.navigate(['/loginClient']);
-      return false;
-    }
-  }
 }

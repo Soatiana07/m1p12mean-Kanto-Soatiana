@@ -65,14 +65,14 @@ router.post('/login', async (req, res) => {
 });
 
   
-// getTokenByValue
+// getClientTokenByValue
 router.post('/tokenByValue', async (req, res) => {
     try {
         const { tokenClient } = req.body;
         if (!tokenClient) {
             return res.status(400).json({ message: 'TokenClient manquant' });
         }
-        const clientToken = await ClientToken.getTokenByValue(tokenClient);
+        const clientToken = await ClientToken.getClientTokenByValue(tokenClient);
 
         if (!clientToken) {
             return res.status(404).json({ message: 'ClientToken non trouvé' });
@@ -86,13 +86,15 @@ router.post('/tokenByValue', async (req, res) => {
 // Logout
 router.post('/logout', async (req, res) => {
     try {
-        const { tokenClient } = req.body;
-        const clientToken = await ClientToken.getTokenByValue(tokenClient);
-        if(!clientToken){
-            return res.status(401).json({ message: 'Token expiré' });
+        console.log(req.body);
+        const idClient = await ClientToken.find({tokenClient : req.body.params.tokenClient});
+        const validTokens = await ClientToken.getValdiTokenById(idClient[0]?.idClient);
+        console.log("Valiiid :", validTokens);
+        if(!validTokens){
+            return res.status(401).json({ message: 'Token Introuvable' });
         }
         else{
-            const clientTokenRes = await ClientToken.logout(clientToken);
+            const clientTokenRes = await ClientToken.logout(validTokens);
             res.json(clientTokenRes);
         }
     } catch (error) {
@@ -116,9 +118,9 @@ router.get('/validTokens', async (req, res) => {
 router.get('/checkToken', async (req, res) => {
     try {
         const { tokenClient } = req.body;
-        const token = await ClientToken.getTokenByValue(tokenClient);
+        const token = await ClientToken.getClientTokenByValue(tokenClient);
         if(!token){
-            return res.status(401).json({ message: 'Token expiré' });
+            return res.status(401).json({ message: 'Token expiré 1' });
         }
         res.json(token);
     } catch (error) {

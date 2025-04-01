@@ -32,6 +32,9 @@
           </tr>
         </tbody>
       </table>
+      <div *ngIf="connecte === 1">
+        <p style="color: red;">Votre session a expiré. Veuillez vous reconnecter.</p>
+      </div>
     </app-card>
   </div>
 </div>

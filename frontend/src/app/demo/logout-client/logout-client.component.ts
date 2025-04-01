@@ -8,11 +8,11 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { Router, RouterModule } from '@angular/router';
-import { AuthGuard } from 'src/app/guards/auth.guard';
+// import { AuthGuard } from 'src/app/guards/auth.guard';
 
 @Component({
   selector: 'app-logout-client',
-  imports: [CardComponent,
+  imports: [
     HttpClientModule,
     FormsModule,
     CommonModule,
@@ -22,19 +22,23 @@ import { AuthGuard } from 'src/app/guards/auth.guard';
     RouterModule],
   templateUrl: './logout-client.component.html',
   styleUrl: './logout-client.component.scss',
-  providers :[LoginClientService, Router, AuthGuard]
+  providers :[LoginClientService, Router/*, AuthGuard */]
 })
 export class LogoutClientComponent {
-  constructor(private loginclientService: LoginClientService) {}
+  constructor(private loginclientService: LoginClientService,
+    private router : Router
+  ) {}
   tokenClient: string = localStorage.getItem('token') || '';
 
   // logout
   logout() {
+    console.log('token : ', this.tokenClient);
     if (this.tokenClient) {
       this.loginclientService.logout(this.tokenClient).subscribe({
         next: (response) => {
-          localStorage.removeItem('token'); // Retirer le token du localStorage
+          localStorage.removeItem('token'); 
           console.log('Déconnexion réussie');
+          this.router.navigate(['/loginClient']);
         },
         error: (err) => {
           console.log('Erreur lors de la déconnexion', err);

@@ -29,7 +29,11 @@ export class AnneeVoitureComponent implements OnInit {
   // Liste
   loadAnnee(): void {
     console.log('ito eeee');
-    this.anneeService.getAnnee().subscribe(data => this.annees = data);
+    this.anneeService.getAnnee().subscribe(data =>{
+      console.log('Données reçues:', data);
+      this.annees = data
+    }
+    );
   }
 
   // Ajout
@@ -47,8 +51,8 @@ export class AnneeVoitureComponent implements OnInit {
 
     console.log(formData);
     this.anneeService.addAnnee(this.newAnnee.annee,this.newAnnee.note).subscribe(() => {
-      this.loadAnnee(); // Recharge la liste après ajout
-      this.newAnnee = { annee: '', note: '' }; // Réinitialise le formulaire
+      this.loadAnnee();
+      this.newAnnee = { annee: '', note: '' }; 
     });
   }
 

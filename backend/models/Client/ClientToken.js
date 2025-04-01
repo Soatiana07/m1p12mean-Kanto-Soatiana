@@ -7,9 +7,9 @@ const ClientTokenSchema = new mongoose.Schema({
     dateExpiration: {type: Date, required: true}
 });
 
-// getTokenByValue
-ClientTokenSchema.statics.getTokenByValue = async function (tokenClient){
-    const clientToken = await this.findOne({tokenClient});
+// getClientTokenByValue
+ClientTokenSchema.statics.getClientTokenByValue = async function (tokenClient){
+    const clientToken = await this.findOne({tokenClient : tokenClient});
     return clientToken;
 };
 
@@ -37,25 +37,34 @@ ClientTokenSchema.statics.generateToken = async function (client) {
 };
 
 // Get Valid token by idClient
-ClientTokenSchema.statics.getValidTokenById = async function (idClient){
+ClientTokenSchema.statics.getValdiTokenById = async function (idClient){
     // dateExpiration > now -> token valide
     const listeClientToken = await this.find({idClient:idClient, dateExpiration : { $gt: new Date() }});
     return listeClientToken;
 }
 
 // Logout
-ClientTokenSchema.statics.logout = async function(clientToken /* Objet clientToken */){
-    try{
-        clientToken.dateExpiration = new Date(); // date d'aujourd'hui
-        await clientToken.save();
+ClientTokenSchema.statics.logout = async function(clientToken) {
+    try {
+        const clientTokeny = await this.findOne({idClient: clientToken[0]?.idClient}); // Rechercher l'objet dans la base
+        console.log(clientTokeny);
 
-        return clientToken;
+        if (!clientTokeny) {
+            throw new Error("Token introuvable");
+        }
+
+        clientTokeny.dateExpiration = new Date(); // Mettre à jour la date d'expiration
+        await clientTokeny.save(); // 🔥 Enregistrer les modifications
+
+        return clientTokeny;
     } catch (error) {
-        throw new Error("Erreur lors de la deconnexion : "+error.message);
+        throw new Error("Erreur lors de la déconnexion : " + error.message);
     }
-}
+};
 
-// Check token : appel de getTokenByValue
+
+// Check token : appel de getClientTokenByValue
+
 
 // Unvalid old token
 ClientTokenSchema.statics.unvalidOldToken = async function (idClient) {

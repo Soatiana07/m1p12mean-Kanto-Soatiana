@@ -8,6 +8,7 @@ const app = express();
 
 // Middleware
 app.use(cors());
+app.use(authMiddleware);
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization, X-Connecte");
@@ -15,10 +16,9 @@ app.use((req, res, next) => {
     res.header("Access-Control-Expose-Headers", "X-Connecte");
     next();
 });
-app.use(authMiddleware);
 
 // Connexion a MongoDB
-mongoose.connect('mongodb+srv://Mekansoa:123@cluster0.ojr4aqy.mongodb.net/Mekansoa?retryWrites=true&w=majority&appName=Cluster0', {
+mongoose.connect(process.env.MONGO_URI, {
     // useNewUrlParser: true,
     // useUnifiedTopology: true
 }).then(() => console.log("MongoBD connecté"))

@@ -25,7 +25,7 @@ app.use((req, res, next) => {
 });
 
 app.use(express.json());
-// app.use(authMiddleware);
+app.use(authMiddleware);
 
 // app.use((req, res, next) => {
 //     res.header("Access-Control-Allow-Origin", "*");
@@ -40,8 +40,8 @@ app.use(express.json());
 // const PORT = process.env.PORT || 5000;
 // Connexion a MongoDB
 mongoose.connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
+    // useNewUrlParser: true,
+    // useUnifiedTopology: true
 }).then(() => console.log("MongoBD connecté"))
     .catch(err => console.log(err));
 

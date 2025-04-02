@@ -8,9 +8,6 @@ const app = express();
 
 // Middleware
 app.use(cors({
-    origin: '*', // Mets l'URL de ton frontend en production
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization', 'X-Connecte'],
     exposedHeaders: ['X-Connecte','Authorization'] // Permet au frontend d'accéder au header
 }));
 

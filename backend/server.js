@@ -18,14 +18,14 @@ app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization, X-Connecte");
     res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS");
-    res.header("Access-Control-Expose-Headers", "X-Connecte");
+    res.header("Access-Control-Expose-Headers", "Authorization,X-Connecte");
 
-    console.log("Headers envoyés dans la réponse :", res.getHeaders()); // Vérifie si X-Connecte est bien ajouté
+    // console.log("Headers envoyés dans la réponse :", res.getHeaders()); // Vérifie si X-Connecte est bien ajouté
     next();
 });
 
 app.use(express.json());
-app.use(authMiddleware);
+// app.use(authMiddleware);
 
 // app.use((req, res, next) => {
 //     res.header("Access-Control-Allow-Origin", "*");
@@ -37,11 +37,11 @@ app.use(authMiddleware);
 // });
 
 
-const PORT = process.env.PORT || 5000;
+// const PORT = process.env.PORT || 5000;
 // Connexion a MongoDB
 mongoose.connect(process.env.MONGO_URI, {
-    // useNewUrlParser: true,
-    // useUnifiedTopology: true
+    useNewUrlParser: true,
+    useUnifiedTopology: true
 }).then(() => console.log("MongoBD connecté"))
     .catch(err => console.log(err));
 
@@ -70,6 +70,9 @@ app.use('/stockPiece', require('./routes/ManagerRoutes/stockPieceRoutes'));
 app.use('/client', require('./routes/ClientRoutes/clientRoutes'));
 app.use('/modeleVoiture', require('./routes/ManagerRoutes/modeleVoitureRoutes'));
 app.use('/voitureClient', require('./routes/ClientRoutes/voitureClientRoutes'));
+app.use('/demandeDevis', require('./routes/ClientRoutes/demandeDevisRoutes'));
+app.use('/detailDemandeDevis', require('./routes/ClientRoutes/detailsDemandeDevis'));
+app.use('/planningEmploye', require('./routes/EmployeRoutes/planningEmployeRoutes'));
 
 module.exports = app;
 // app.listen(PORT, () => console.log(`Serveur démarré sur le port ${PORT}`))

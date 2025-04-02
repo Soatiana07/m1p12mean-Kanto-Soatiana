@@ -11,14 +11,14 @@ app.use(cors({
     origin: '*', // Mets l'URL de ton frontend en production
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization', 'X-Connecte'],
-    exposedHeaders: ['X-Connecte'] // Permet au frontend d'accéder au header
+    exposedHeaders: ['X-Connecte','Authorization'] // Permet au frontend d'accéder au header
 }));
 
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization, X-Connecte");
     res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS");
-    res.header("Access-Control-Expose-Headers", "Authorization,X-Connecte");
+    res.header("Access-Control-Expose-Headers", "X-Connecte");
 
     // console.log("Headers envoyés dans la réponse :", res.getHeaders()); // Vérifie si X-Connecte est bien ajouté
     next();

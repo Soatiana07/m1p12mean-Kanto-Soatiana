@@ -11,7 +11,7 @@ const routes: Routes = [
     component: AdminComponent,
     canActivate: [AuthGuard],
     children: [
-      { path: '', redirectTo: '/default',
+      { path: '', redirectTo: '/choixLogin',
         pathMatch: 'full'
       },
       { path: 'default',
@@ -175,7 +175,7 @@ const routes: Routes = [
     children: [
       {
         path: 'loginManager',
-        loadComponent: () => import('./demo/choix-login/choix-login.component').then(m => m.ChoixLoginComponent),
+        loadComponent: () => import('./demo/login/login-manager/login-manager.component').then(m => m.LoginManagerComponent),
         // canActivate: [AuthGuard]
       }
 
@@ -186,7 +186,7 @@ const routes: Routes = [
     children: [
       {
         path: 'loginMecanicien',
-        loadComponent: () => import('./demo/choix-login/choix-login.component').then(m => m.ChoixLoginComponent),
+        loadComponent: () => import('./demo/login/login-mecanicien/login-mecanicien.component').then(m => m.LoginMecanicienComponent),
         // canActivate: [AuthGuard]
       }
 

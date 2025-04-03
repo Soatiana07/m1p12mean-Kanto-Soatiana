@@ -22,8 +22,8 @@ import { LoginMecanicienService } from 'src/app/services/login-mecanicien.servic
     MatFormFieldModule,
     RouterModule
   ],
-  templateUrl: './login-manager.component.html',
-  styleUrl: './login-manager.component.scss',
+  templateUrl: './login-mecanicien.component.html',
+  styleUrl: './login-mecanicien.component.scss',
   providers :[LoginMecanicienService, Router/*, AuthGuard */]
 })
 export class LoginMecanicienComponent {

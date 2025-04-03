@@ -7,10 +7,10 @@ import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class LoginClientService{
+export class LoginMecanicienService{
 
-  private apiUrl = `${environment.apiUrl}/client`;
-  private apiUrlAuth = `${environment.apiUrl}/auth/checkToken`;
+  private apiUrl = `${environment.apiUrl}/mecanicien`;
+  private apiUrlAuth = `${environment.apiUrl}/auth/checkTokenMecanicien`;
 
 
   constructor(private http: HttpClient, private router : Router) {}
@@ -21,28 +21,28 @@ export class LoginClientService{
   }
 
   // Vérifier le token
-  checkToken(tokenClient: string): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/checkToken`, { params: { tokenClient } });
+  checkToken(tokenMecanicien: string): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/checkToken`, { params: { tokenMecanicien } });
   }
 
   // Déconnexion
-  logout(tokenClient: string): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/logout`, { params: { tokenClient } });
+  logout(tokenMecanicien: string): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/logout`, { params: { tokenMecanicien } });
   }
 
   // Récupérer les tokens valides
-  getValidTokens(idClient: string): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/validTokens`, { params: { idClient } });
+  getValidTokens(idMecanicien: string): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/validTokens`, { params: { idMecanicien } });
   }
 
   // Mettre invalide les anciens tokens
-  unvalidOldToken(idClient: string): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/unvalidOldToken`, { idClient });
+  unvalidOldToken(idMecanicien: string): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/unvalidOldToken`, { idMecanicien });
   }
 
-  // Get idclient by token
-  getIdClientByToken(tokenClient: String): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/${tokenClient}`);
+  // Get idManager by token
+  getIdManagerByToken(tokenMecanicien: String): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/${tokenMecanicien}`);
   }
 
   verifyToken(): Observable<number> {
@@ -62,7 +62,7 @@ export class LoginClientService{
         catchError((error: HttpErrorResponse) => {
             console.error('Erreur de vérification du token:', error);           
             localStorage.removeItem('token');
-            this.router.navigate(['/loginClient']);
+            this.router.navigate(['/loginMecanicien']);
             return of(1); 
 
         })

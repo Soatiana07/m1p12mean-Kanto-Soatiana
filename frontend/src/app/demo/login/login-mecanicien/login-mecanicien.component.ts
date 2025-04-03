@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { CardComponent } from "../../theme/shared/components/card/card.component";
 import { LoginClientService } from 'src/app/services/Client/login-client.service';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
@@ -8,6 +7,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { RouterModule, Router, ActivatedRoute } from '@angular/router';
+import { LoginMecanicienService } from 'src/app/services/login-mecanicien.service';
 // import { AuthGuard } from 'src/app/guards/auth.guard';
 
 
@@ -22,18 +22,18 @@ import { RouterModule, Router, ActivatedRoute } from '@angular/router';
     MatFormFieldModule,
     RouterModule
   ],
-  templateUrl: './login-client.component.html',
-  styleUrl: './login-client.component.scss',
-  providers :[LoginClientService, Router/*, AuthGuard */]
+  templateUrl: './login-manager.component.html',
+  styleUrl: './login-manager.component.scss',
+  providers :[LoginMecanicienService, Router/*, AuthGuard */]
 })
-export class LoginClientComponent {
+export class LoginMecanicienComponent {
   email: string = '';
   mdp: string = '';
   connecte: number = 0;
   errorMessage: string = '';
 
   constructor(
-    private loginclientService: LoginClientService,
+    private loginMecanicienService: LoginMecanicienService,
     private router : Router,
     private route: ActivatedRoute
   ) {}
@@ -44,7 +44,7 @@ export class LoginClientComponent {
   }
 
   verifierConnexion() {
-    this.loginclientService.verifyToken().subscribe({
+    this.loginMecanicienService.verifyToken().subscribe({
       next: (connecte) => {
         console.log('Statut connexion:', connecte);
         this.connecte = connecte;
@@ -60,12 +60,12 @@ export class LoginClientComponent {
   // Login
   login() {
     if (this.email && this.mdp) {
-      this.loginclientService.login(this.email, this.mdp).subscribe({
+      this.loginMecanicienService.login(this.email, this.mdp).subscribe({
         next: (response) => {
           localStorage.setItem('token', response.token);
-          console.log('Client connecté: ', response.client);
+          // console.log('Client connecté: ', response.client);
           // localStorage.setItem('clientconnecte', JSON.stringify(response.client));
-          this.router.navigate(['/accueilClient']);
+          this.router.navigate(['/employe']);
         },
         error: (err) => {
           this.errorMessage = err.error.error || 'Erreur lors de la connexion';

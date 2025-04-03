@@ -1,40 +1,48 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const authMiddleware = require('./middlewares/authClientMiddleware');
+// const authMiddleware = require('./middlewares/authClientMiddleware');
+const verifyAuthToken = require('./middlewares/authClientMiddleware'); 
+const verifyAuthMecanicienToken = require('./middlewares/authMecanicienMiddleware'); 
+const verifyAuthManagerToken = require('./middlewares/authManagerMiddleware'); 
+
 require('dotenv').config();
 
 const app = express();
 
 // Middleware
 app.use(cors({
-    exposedHeaders: ['X-Connecte','Authorization'] // Permet au frontend d'accéder au header
+    origin: '*', 
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization', 'X-Connecte'],
+    exposedHeaders: ['X-Connecte', 'Authorization']
 }));
 
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization, X-Connecte");
     res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS");
-    res.header("Access-Control-Expose-Headers", "X-Connecte");
-
-    // console.log("Headers envoyés dans la réponse :", res.getHeaders()); // Vérifie si X-Connecte est bien ajouté
+    res.header("Access-Control-Expose-Headers", "X-Connecte, Authorization");
     next();
 });
 
 app.use(express.json());
-app.use(authMiddleware);
+// app.use(authMiddleware);
 
-// app.use((req, res, next) => {
-//     res.header("Access-Control-Allow-Origin", "*");
-//     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization, X-Connecte");
-//     res.header("Access-Control-Allow-Methods","GET,PUT,POST,DELETE,OPTIONS");
-//     res.header("Access-Control-Expose-Headers", "X-Connecte");
-//     console.log("Headers envoyés dans la réponse :", res.getHeaders());
-//     next();
-// });
+app.get('/auth/checkToken', verifyAuthToken, (req, res) => {
+    // res.json({ message: "Client authentifié" });
+});
+
+app.get('/auth/checkTokenMecanicien', verifyAuthMecanicienToken, (req, res) => {
+    // res.json({ message: "Mécanicien authentifié" });
+});
+
+app.get('/auth/checkTokenManager', verifyAuthManagerToken, (req, res) => {
+    // res.json({ message: "Manager authentifié" });
+});
 
 
-// const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5000;
 // Connexion a MongoDB
 mongoose.connect(process.env.MONGO_URI, {
     // useNewUrlParser: true,
@@ -67,9 +75,12 @@ app.use('/stockPiece', require('./routes/ManagerRoutes/stockPieceRoutes'));
 app.use('/client', require('./routes/ClientRoutes/clientRoutes'));
 app.use('/modeleVoiture', require('./routes/ManagerRoutes/modeleVoitureRoutes'));
 app.use('/voitureClient', require('./routes/ClientRoutes/voitureClientRoutes'));
-app.use('/demandeDevis', require('./routes/ClientRoutes/demandeDevisRoutes'));
-app.use('/detailDemandeDevis', require('./routes/ClientRoutes/detailsDemandeDevis'));
-app.use('/planningEmploye', require('./routes/EmployeRoutes/planningEmployeRoutes'));
+app.use('/manager', require('./routes/managerRoutes'));
+app.use('/mecanicien', require('./routes/mecanicienRoutes'));
 
-module.exports = app;
-// app.listen(PORT, () => console.log(`Serveur démarré sur le port ${PORT}`))
+app.use((req, res, next) => {
+    console.log("Headers finaux envoyés :", res.getHeaders());
+    next();
+});
+// module.exports = app;
+app.listen(PORT, () => console.log(`Serveur démarré sur le port ${PORT}`))

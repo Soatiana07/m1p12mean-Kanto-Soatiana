@@ -26,7 +26,7 @@ ClientTokenSchema.statics.generateToken = async function (client) {
         // Save
         const clientToken = new this({
             idClient: client._id,
-            tokenClient: token, 
+            tokenClient: token,
             dateExpiration: dateExpiration
         });
         await clientToken.save();

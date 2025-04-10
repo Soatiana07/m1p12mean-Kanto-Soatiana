@@ -47,23 +47,24 @@ export class LoginClientService{
 
   verifyToken(): Observable<number> {
     const token = localStorage.getItem('token');
-    
+
+    // Tsisy token
     if (!token) {
-        return of(1); 
+        return of(1);
     }
 
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    
+
     return this.http.get(this.apiUrlAuth, { headers, observe: 'response' }).pipe(
         map((response) => {
             console.log("Responseeeee :", response);
-            return 0; 
+            return 0;
         }),
         catchError((error: HttpErrorResponse) => {
-            console.error('Erreur de vérification du token:', error);           
+            console.error('Erreur de vérification du token:', error);
             localStorage.removeItem('token');
-            this.router.navigate(['/loginClient']);
-            return of(1); 
+            this.router.navigate(['/loginClient']/*, { queryParams: { session: 'expired' } }*/);
+            return of(1);
 
         })
     );

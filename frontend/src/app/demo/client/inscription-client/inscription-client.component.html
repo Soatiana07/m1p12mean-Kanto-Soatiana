@@ -1,0 +1,63 @@
+<div class="auth-main">
+  <div class="auth-wrapper v3">
+    <div class="auth-form">
+      <div class="card my-5 shadow">
+        <div class="card-body">
+          <a href="#" class="d-flex justify-content-center">
+            <img src="assets/images/kansoa.png" alt="" class="logo logo-lg" width="200px" height="150px" />
+          </a>
+          <div class="row">
+            <div class="d-flex justify-content-center">
+              <div class="auth-header">
+                <h2 class="text-secondary mt-5"><b>Bienvenue sur Me-kan'soa</b></h2>
+                <p class="fs-4 mt-2">Veuillez créer votre compte client.</p>
+              </div>
+            </div>
+          </div>
+
+          <form #addClientForm="ngForm" (ngSubmit)="addClient()" autocomplete="off">
+            <div *ngIf="successMessage" class="alert alert-success text-center mt-3">
+              {{ successMessage }} <a href="/loginClient" class="text-center">Se connecter</a>
+            </div>
+            <div *ngIf="errorMessage" class="alert alert-danger text-center mt-3">
+              {{ errorMessage }}
+            </div>
+
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control" id="nom" [(ngModel)]="newClient.nom" name="nom" required />
+              <label for="nom">Nom</label>
+            </div>
+
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control" id="adresse" [(ngModel)]="newClient.adresse" name="adresse" />
+              <label for="adresse">Adresse</label>
+            </div>
+
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control" id="telephone" [(ngModel)]="newClient.telephone" name="telephone" required />
+              <label for="telephone">Téléphone</label>
+            </div>
+
+            <div class="form-floating mb-3">
+              <input type="email" class="form-control" id="email" [(ngModel)]="newClient.email" name="email" required />
+              <label for="email">Email</label>
+            </div>
+
+            <div class="form-floating mb-3">
+              <input type="password" class="form-control" id="mdp" [(ngModel)]="newClient.mdp" name="mdp" required />
+              <label for="mdp">Mot de passe</label>
+            </div>
+
+            <div class="d-grid mt-4">
+              <button type="submit" class="btn btn-success">S'inscrire</button>
+            </div>
+
+            <hr />
+            <p class="text-center"><a href="/loginClient">Déjà inscrit ? Se connecter</a></p>
+            <p class="text-center"><a href="/accueilClient">Accueil</a></p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

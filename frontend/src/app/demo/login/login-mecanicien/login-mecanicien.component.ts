@@ -29,8 +29,10 @@ import { LoginMecanicienService } from 'src/app/services/login-mecanicien.servic
 export class LoginMecanicienComponent {
   email: string = '';
   mdp: string = '';
-  connecte: number = 0;
+  connecte: number | null = null;
   errorMessage: string = '';
+  tokenMecanicien: string = localStorage.getItem('token') || '';
+
 
   constructor(
     private loginMecanicienService: LoginMecanicienService,
@@ -39,10 +41,18 @@ export class LoginMecanicienComponent {
   ) {}
 
   erreur: string = '';
+  // ngOnInit(): void {this.route.queryParams.subscribe(params => {
+  //     if (params['session'] === 'expired') {
+  //       this.verifierConnexion(); // Affiche le message d'erreur si nécessaire
+  //     } else {
+  //       this.connecte = null; // Ne rien afficher
+  //     }
+  //   });
+  // }
+
   ngOnInit(): void {
     this.verifierConnexion();
   }
-
   verifierConnexion() {
     this.loginMecanicienService.verifyToken().subscribe({
       next: (connecte) => {
@@ -63,9 +73,7 @@ export class LoginMecanicienComponent {
       this.loginMecanicienService.login(this.email, this.mdp).subscribe({
         next: (response) => {
           localStorage.setItem('token', response.token);
-          // console.log('Client connecté: ', response.client);
-          // localStorage.setItem('clientconnecte', JSON.stringify(response.client));
-          this.router.navigate(['/employe']);
+          this.router.navigate(['/employe']); // mbola miova
         },
         error: (err) => {
           this.errorMessage = err.error.error || 'Erreur lors de la connexion';
@@ -76,5 +84,21 @@ export class LoginMecanicienComponent {
     }
   }
 
+// logout
+logout() {
+  console.log('token : ', this.tokenMecanicien);
+  if (this.tokenMecanicien) {
+    this.loginMecanicienService.logout(this.tokenMecanicien).subscribe({
+      next: (response) => {
+        localStorage.removeItem('token');
+        console.log('Déconnexion réussie');
+        this.router.navigate(['/loginMecanicien']);
+      },
+      error: (err) => {
+        console.log('Erreur lors de la déconnexion', err);
+      }
+    });
+  }
+}
 
 }

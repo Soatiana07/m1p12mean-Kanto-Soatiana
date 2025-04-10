@@ -11,10 +11,10 @@
               <div class="auth-header">
                 <h2 class="text-secondary mt-5"><b>Bienvenue sur Me-kan'soa</b></h2>
                 <p class="fs-4 mt-2">Veuillez vous identifier entant que client.</p>
-                <!-- <div *ngIf="connecte"> -->
+                <div *ngIf="connecte !== null">
                   <span *ngIf="connecte === 1" class="alert alert-danger">Votre session a expiré. Veuillez vous reconnecter.</span>
                   <!-- <p style="color: red;">Votre session a expiré. Veuillez vous reconnecter.</p> -->
-                <!-- </div> -->
+                </div>
                 <br>
               </div>
             </div>
@@ -40,7 +40,8 @@
               <button class="btn btn-primary" type="submit">Se connecter</button>
             </div>
             <hr />
-            <p><a href="/accueilClient" class="text-center">Accueil</a></p>
+            <p class="text-center"><a href="/accueilClient" class="text-center">Accueil</a> </p>
+            <p class="text-center"><a href="/inscriptionClient" class="text-center">S'inscrire</a></p>
             <h5 class="d-flex justify-content-center">
               <!-- <a [routerLink]="['/guest/register']">Don't have an account?</a> -->
             </h5>

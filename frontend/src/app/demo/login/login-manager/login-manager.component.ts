@@ -29,22 +29,32 @@ import { LoginManagerService } from 'src/app/services/login-manager.service';
 export class LoginManagerComponent {
   email: string = '';
   mdp: string = '';
-  connecte: number = 0;
+  connecte: number | null = null;
   errorMessage: string = '';
+  tokenManager: string = localStorage.getItem('token') || '';
 
   constructor(
-    private loginManagerService: LoginManagerService,
+    private loginmanagerservice: LoginManagerService,
     private router : Router,
     private route: ActivatedRoute
   ) {}
 
   erreur: string = '';
+  // ngOnInit(): void {this.route.queryParams.subscribe(params => {
+  //   if (params['session'] === 'expired') {
+  //     this.verifierConnexion(); // Affiche le message d'erreur si nécessaire
+  //   } else {
+  //     this.connecte = null; // Ne rien afficher
+  //   }
+  // });
+  // }
+
   ngOnInit(): void {
     this.verifierConnexion();
   }
 
   verifierConnexion() {
-    this.loginManagerService.verifyToken().subscribe({
+    this.loginmanagerservice.verifyToken().subscribe({
       next: (connecte) => {
         console.log('Statut connexion:', connecte);
         this.connecte = connecte;
@@ -60,10 +70,10 @@ export class LoginManagerComponent {
   // Login
   login() {
     if (this.email && this.mdp) {
-      this.loginManagerService.login(this.email, this.mdp).subscribe({
+      this.loginmanagerservice.login(this.email, this.mdp).subscribe({
         next: (response) => {
           localStorage.setItem('token', response.token);
-          // console.log('Client connecté: ', response.client);
+          console.log('Client connecté: ', response.client);
           // localStorage.setItem('clientconnecte', JSON.stringify(response.client));
           this.router.navigate(['/employe']);
         },
@@ -76,5 +86,20 @@ export class LoginManagerComponent {
     }
   }
 
-
+// logout
+logout() {
+  console.log('token : ', this.tokenManager);
+  if (this.tokenManager) {
+    this.loginmanagerservice.logout(this.tokenManager).subscribe({
+      next: (response) => {
+        localStorage.removeItem('token');
+        console.log('Déconnexion réussie');
+        this.router.navigate(['/loginManager']);
+      },
+      error: (err) => {
+        console.log('Erreur lors de la déconnexion', err);
+      }
+    });
+  }
+}
 }

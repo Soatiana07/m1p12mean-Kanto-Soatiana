@@ -17,6 +17,7 @@ export class LoginManagerService{
 
   // Login
   login(email: string, mdp: string): Observable<any> {
+    console.log("Api url : ", `${this.apiUrl}/login`);
     return this.http.post<any>(`${this.apiUrl}/login`, { email, mdp });
   }
 
@@ -47,23 +48,23 @@ export class LoginManagerService{
 
   verifyToken(): Observable<number> {
     const token = localStorage.getItem('token');
-    
+
     if (!token) {
-        return of(1); 
+        return of(1);
     }
 
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    
+
     return this.http.get(this.apiUrlAuth, { headers, observe: 'response' }).pipe(
         map((response) => {
             console.log("Responseeeee :", response);
-            return 0; 
+            return 0;
         }),
         catchError((error: HttpErrorResponse) => {
-            console.error('Erreur de vérification du token:', error);           
+            console.error('Erreur de vérification du token:', error);
             localStorage.removeItem('token');
-            this.router.navigate(['/loginManager']);
-            return of(1); 
+            this.router.navigate(['/loginManager']/*, { queryParams: { session: 'expired' } }*/);
+            return of(1);
 
         })
     );

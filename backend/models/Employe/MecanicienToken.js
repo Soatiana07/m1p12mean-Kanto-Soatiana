@@ -18,10 +18,10 @@ MecanicienTokenSchema.statics.generateToken = async function (mecanicien) {
     try {
         const payload = { idMecanicien: mecanicien._id, email: mecanicien.email };
         const secretKey = process.env.JWT_SECRET || 'mekansoa'; 
-        const token = jwt.sign(payload, secretKey, { expiresIn: '1m' });
+        const token = jwt.sign(payload, secretKey, { expiresIn: '5m' });
 
         const dateExpiration = new Date();
-        dateExpiration.setSeconds(dateExpiration.getSeconds() + 1 * 60); 
+        dateExpiration.setSeconds(dateExpiration.getSeconds() + 5 * 60); 
 
         // Save
         const employeToken = new this({

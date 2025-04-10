@@ -13,6 +13,7 @@ router.post('/login', async (req, res) => {
             return res.status(400).json({ error: "L'email et le mot de passe sont requis." });
         }
         const manager = await Employe.findByEmailAndMdp(email, mdp);
+        console.log("Manager recu : ",manager);
         if (!manager) {
             return res.status(401).json({ error: "Email ou mot de passe incorrect." });
         }
@@ -48,7 +49,7 @@ router.post('/logout', async (req, res) => {
     try {
         console.log(req.body);
         const idManager = await ManagerToken.find({tokenManager : req.body.params.tokenManager});
-        const validTokens = await ManagerToken.getValdiTokenById(idManager[0]?.idManager);
+        const validTokens = await ManagerToken.getValdiTokenById(idManager[0]?.idEmploye);
         console.log("Valiiid :", validTokens);
         if(!validTokens){
             return res.status(401).json({ message: 'Token Introuvable' });

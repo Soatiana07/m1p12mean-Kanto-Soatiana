@@ -16,10 +16,12 @@ const EmployeSchema = new mongoose.Schema({
     mdp: {type: String, required: true}
 }, {timestamps: true});
 
-
 // Login (findByEmailAndMdp)
 EmployeSchema.statics.findByEmailAndMdp = async function (email, mdp) {
+    console.log("Tafiditra anaty fonction mitady email sy mdp");
     const employe = await this.findOne({ email });
+    console.log("Employe find one :", employe);
+    console.log("comparaison : ", await bcrypt.compare(mdp, employe.mdp));
     
     if (!employe || !(await bcrypt.compare(mdp, employe.mdp))) {
         throw new Error('Email ou mot de passe incorrect'); 

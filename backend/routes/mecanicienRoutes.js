@@ -48,7 +48,7 @@ router.post('/logout', async (req, res) => {
     try {
         console.log(req.body);
         const idMecanicien = await MecanicienToken.find({tokenMecanicien : req.body.params.tokenMecanicien});
-        const validTokens = await MecanicienToken.getValdiTokenById(idMecanicien[0]?.idMecanicien);
+        const validTokens = await MecanicienToken.getValdiTokenById(idMecanicien[0]?.idEmploye);
         console.log("Valiiid :", validTokens);
         if(!validTokens){
             return res.status(401).json({ message: 'Token Introuvable' });

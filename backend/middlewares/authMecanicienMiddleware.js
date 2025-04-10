@@ -30,7 +30,7 @@ const verifyAuthMecanicienToken = (req, res, next) => {
 
         req.mecanicien = decoded;
 
-        if (req.path === "/auth/checkToken") {
+        if (req.path === "/auth/checkTokenMecanicien") {
             return res.status(200).json({ message: 'Token valide.', xConnecte: '0', mecanicien: decoded });
         }
         next();

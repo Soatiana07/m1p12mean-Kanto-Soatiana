@@ -28,9 +28,9 @@ const verifyAuthManagerToken = (req, res, next) => {
 
         console.log("Token valide. Utilisateur :", decoded);
 
-        req.client = decoded;
+        req.manager = decoded;
 
-        if (req.path === "/auth/checkToken") {
+        if (req.path === "/auth/checkTokenManager") {
             return res.status(200).json({ message: 'Token valide.', xConnecte: '0', manager: decoded });
         }
         next();

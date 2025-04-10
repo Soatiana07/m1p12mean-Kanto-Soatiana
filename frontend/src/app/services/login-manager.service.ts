@@ -47,7 +47,7 @@ export class LoginManagerService{
   }
 
   verifyToken(): Observable<number> {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('tokenManager');
 
     if (!token) {
         return of(1);
@@ -62,7 +62,7 @@ export class LoginManagerService{
         }),
         catchError((error: HttpErrorResponse) => {
             console.error('Erreur de vérification du token:', error);
-            localStorage.removeItem('token');
+            localStorage.removeItem('tokenManager');
             this.router.navigate(['/loginManager']/*, { queryParams: { session: 'expired' } }*/);
             return of(1);
 

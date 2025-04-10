@@ -72,7 +72,7 @@ export class LoginMecanicienComponent {
     if (this.email && this.mdp) {
       this.loginMecanicienService.login(this.email, this.mdp).subscribe({
         next: (response) => {
-          localStorage.setItem('token', response.token);
+          localStorage.setItem('tokenMecanicien', response.token);
           this.router.navigate(['/employe']); // mbola miova
         },
         error: (err) => {
@@ -90,7 +90,7 @@ logout() {
   if (this.tokenMecanicien) {
     this.loginMecanicienService.logout(this.tokenMecanicien).subscribe({
       next: (response) => {
-        localStorage.removeItem('token');
+        localStorage.removeItem('tokenMecanicien');
         console.log('Déconnexion réussie');
         this.router.navigate(['/loginMecanicien']);
       },

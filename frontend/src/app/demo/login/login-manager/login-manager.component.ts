@@ -72,7 +72,7 @@ export class LoginManagerComponent {
     if (this.email && this.mdp) {
       this.loginmanagerservice.login(this.email, this.mdp).subscribe({
         next: (response) => {
-          localStorage.setItem('token', response.token);
+          localStorage.setItem('tokenManager', response.token);
           console.log('Client connecté: ', response.client);
           // localStorage.setItem('clientconnecte', JSON.stringify(response.client));
           this.router.navigate(['/employe']);
@@ -92,7 +92,7 @@ logout() {
   if (this.tokenManager) {
     this.loginmanagerservice.logout(this.tokenManager).subscribe({
       next: (response) => {
-        localStorage.removeItem('token');
+        localStorage.removeItem('tokenManager');
         console.log('Déconnexion réussie');
         this.router.navigate(['/loginManager']);
       },

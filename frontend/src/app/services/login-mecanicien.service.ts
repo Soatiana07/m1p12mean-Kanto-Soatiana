@@ -40,13 +40,13 @@ export class LoginMecanicienService{
     return this.http.post<any>(`${this.apiUrl}/unvalidOldToken`, { idMecanicien });
   }
 
-  // Get idManager by token
-  getIdManagerByToken(tokenMecanicien: String): Observable<any> {
+  // Get idMecanicien by token
+  getIdMecanicienByToken(tokenMecanicien: String): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/${tokenMecanicien}`);
   }
 
   verifyToken(): Observable<number> {
-    const token = localStorage.getItem('tokenManager');
+    const token = localStorage.getItem('tokenMecanicien');
 
     if (!token) {
         return of(1);
@@ -61,7 +61,7 @@ export class LoginMecanicienService{
         }),
         catchError((error: HttpErrorResponse) => {
             console.error('Erreur de vérification du token:', error);
-            localStorage.removeItem('tokenManager');
+            localStorage.removeItem('tokenMecanicien');
             this.router.navigate(['/loginMecanicien']/*, { queryParams: { session: 'expired' } }*/);
             return of(1);
 
